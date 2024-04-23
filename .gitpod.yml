@@ -1,0 +1,12 @@
+image: gitpod/workspace-full:latest
+
+tasks:
+  - name: Start Application
+    init: pnpm install
+    command: pnpm run dev
+ports:
+  - name: Next.js Application
+    description: Port 3000 for the next.js app
+    port: 3000
+    onOpen: notify
+    visibility: public
