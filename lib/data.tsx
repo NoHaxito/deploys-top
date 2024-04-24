@@ -6,34 +6,38 @@ import {
 } from "lucide-react";
 import { ReactNode } from "react";
 
-interface Category {
+export interface Category {
   name: string;
   href: string;
   icon: ReactNode;
+  id: string;
 }
-interface Provider {
+export interface Provider {
   name: string;
   description: string;
   icon: string;
   href: string;
   pricing_href: string;
   services_offered: ServiceOffered[];
-  free_tier: ServiceFreeTier | null;
+  as_free_tier: boolean;
   is_serverless: boolean;
 }
 interface ServiceOffered {
+  category_name?: string;
   name: string;
+  description?: string;
   supported_types?: string[];
   pricing: {
     free_tier?: any[];
   };
+  disabled?: boolean; // for avoiding modal open
 }
-interface ServiceFreeTier {
-  services_included: {
-    name: string;
-    description: string;
-  }[];
-}
+// interface ServiceFreeTier {
+//   services_included: {
+//     name: string;
+//     description: string;
+//   }[];
+// }
 
 export const providers: Provider[] = [
   {
@@ -45,7 +49,8 @@ export const providers: Provider[] = [
     icon: "https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico",
     services_offered: [
       {
-        name: "deployments",
+        category_name: "deployments",
+        name: "Deployments",
         supported_types: ["Next.js", "React", "Astro"],
         pricing: {
           free_tier: [
@@ -62,26 +67,38 @@ export const providers: Provider[] = [
         },
       },
       {
-        name: "databases",
-        supported_types: ["PostgreSQL"],
+        category_name: "databases",
+        name: "Databases",
+        supported_types: ["PostgreSQL", "Redis KV"],
         pricing: {
           free_tier: [
             {
               type: "Compute Hours",
               included: "60 hours",
             },
+            {
+              type: "Redis KV Requests",
+              included: "30,000 requests",
+            },
           ],
         },
       },
-    ],
-    free_tier: {
-      services_included: [
-        {
-          name: "application_deployments",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
+      {
+        category_name: "bucket_storage",
+        name: "Vercel Blob",
+        supported_types: ["Files"],
+        pricing: {
+          free_tier: [
+            {
+              type: "",
+              included: "60 hours",
+            },
+          ],
         },
-      ],
-    },
+        disabled: true,
+      },
+    ],
+    as_free_tier: true,
     is_serverless: false,
   },
   {
@@ -92,8 +109,9 @@ export const providers: Provider[] = [
     icon: "https://www.cloudflare.com/favicon.ico",
     services_offered: [
       {
-        name: "deployments",
-        supported_types: ["Next.js", "React", "Astro"],
+        category_name: "deployments",
+        name: "Cloudflare Pages",
+        supported_types: ["Static Sites", "React", "Astro", "Remix"],
         pricing: {
           free_tier: [
             {
@@ -109,8 +127,9 @@ export const providers: Provider[] = [
         },
       },
       {
-        name: "databases",
-        supported_types: ["PostgreSQL"],
+        category_name: "databases",
+        name: "Cloudflare D1",
+        supported_types: ["SQLite"],
         pricing: {
           free_tier: [
             {
@@ -120,15 +139,29 @@ export const providers: Provider[] = [
           ],
         },
       },
-    ],
-    free_tier: {
-      services_included: [
-        {
-          name: "application_deployments",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
+      {
+        category_name: "bucket_storage",
+        name: "Cloudflare R2",
+        supported_types: ["Files"],
+        pricing: {
+          free_tier: [
+            {
+              type: "Storage",
+              included: "10 GB / month",
+            },
+            {
+              type: "Class A Operations",
+              included: "1 Million / month",
+            },
+            {
+              type: "Class B Operations",
+              included: "10 Million / month",
+            },
+          ],
         },
-      ],
-    },
+      },
+    ],
+    as_free_tier: true,
     is_serverless: false,
   },
   {
@@ -139,8 +172,9 @@ export const providers: Provider[] = [
     icon: "https://www.netlify.com/favicon/icon.svg",
     services_offered: [
       {
-        name: "deployments",
-        supported_types: ["Next.js", "React", "Gatsby", "Static Pages"],
+        category_name: "deployments",
+        name: "Deployments",
+        supported_types: ["Next.js", "React", "Gatsby", "Static Sites"],
         pricing: {
           free_tier: [
             {
@@ -156,14 +190,7 @@ export const providers: Provider[] = [
         },
       },
     ],
-    free_tier: {
-      services_included: [
-        {
-          name: "application_deployments",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-      ],
-    },
+    as_free_tier: true,
     is_serverless: false,
   },
   {
@@ -174,12 +201,9 @@ export const providers: Provider[] = [
     icon: "https://aiven.io/favicons/favicon-32x32.png",
     services_offered: [
       {
-        name: "databases",
-        supported_types: [
-          "MySQL (on DigitalOcean)",
-          "PostgreSQL (on DigitalOcean)",
-          "Redis (on DigitalOcean)",
-        ],
+        category_name: "databases",
+        name: "Databases",
+        supported_types: ["MySQL", "PostgreSQL", "Redis"],
         pricing: {
           free_tier: [
             {
@@ -190,14 +214,7 @@ export const providers: Provider[] = [
         },
       },
     ],
-    free_tier: {
-      services_included: [
-        {
-          name: "databases",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-      ],
-    },
+    as_free_tier: true,
     is_serverless: false,
   },
   {
@@ -208,7 +225,8 @@ export const providers: Provider[] = [
     icon: "https://supabase.com/favicon/favicon-32x32.png",
     services_offered: [
       {
-        name: "authentication",
+        category_name: "authentication",
+        name: "User Authentication",
         pricing: {
           free_tier: [
             {
@@ -219,7 +237,8 @@ export const providers: Provider[] = [
         },
       },
       {
-        name: "databases",
+        category_name: "databases",
+        name: "Database",
         supported_types: ["PostgreSQL"],
         pricing: {
           free_tier: [
@@ -230,19 +249,21 @@ export const providers: Provider[] = [
           ],
         },
       },
+      {
+        category_name: "bucket_storage",
+        name: "Storage",
+        supported_types: ["Bucket Storage"],
+        pricing: {
+          free_tier: [
+            {
+              type: "Storage",
+              included: "5 GB",
+            },
+          ],
+        },
+      },
     ],
-    free_tier: {
-      services_included: [
-        {
-          name: "authentication",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-        {
-          name: "database",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-      ],
-    },
+    as_free_tier: true,
     is_serverless: false,
   },
   {
@@ -253,7 +274,8 @@ export const providers: Provider[] = [
     icon: "https://zeabur.com/favicon.svg",
     services_offered: [
       {
-        name: "deployments",
+        category_name: "deployments",
+        name: "Deployments",
         supported_types: [
           "Static Sites",
           "Node.js",
@@ -276,14 +298,7 @@ export const providers: Provider[] = [
         },
       },
     ],
-    free_tier: {
-      services_included: [
-        {
-          name: "application_deployments",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-      ],
-    },
+    as_free_tier: true,
     is_serverless: true,
   },
   {
@@ -294,7 +309,8 @@ export const providers: Provider[] = [
     icon: "https://cdn.sanity.io/images/hvk0tap5/production/c4fd92ad649864b4aa2d4985072b9779bd7e8119-128x128.png?fit=max&auto=format",
     services_offered: [
       {
-        name: "deployments",
+        category_name: "deployments",
+        name: "Deployments",
         supported_types: [
           "Static Sites",
           "Node.js",
@@ -318,7 +334,8 @@ export const providers: Provider[] = [
         },
       },
       {
-        name: "databases",
+        category_name: "databases",
+        name: "Databases",
         supported_types: ["PostgreSQL", "Redis"],
         pricing: {
           free_tier: [
@@ -334,14 +351,7 @@ export const providers: Provider[] = [
         },
       },
     ],
-    free_tier: {
-      services_included: [
-        {
-          name: "application_deployments",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-      ],
-    },
+    as_free_tier: true,
     is_serverless: false,
   },
   {
@@ -385,35 +395,32 @@ export const providers: Provider[] = [
         },
       },
     ],
-    free_tier: {
-      services_included: [
-        {
-          name: "application_deployments",
-          description: "....", // aquí podemos poner codigo html, luego lo parseamos.
-        },
-      ],
-    },
+    as_free_tier: true,
     is_serverless: false,
   },
 ];
 export const categories: Category[] = [
   {
     name: "Deployments",
+    id: "deployments",
     href: "/services?category=deployments",
     icon: <LucideZap className="size-4" />,
   },
   {
     name: "Databases",
+    id: "databases",
     href: "/services?category=databases",
     icon: <LucideDatabase className="size-4" />,
   },
   {
-    name: "Images Hosting",
-    href: "/services?category=images-hosting",
+    name: "Bucket Storage",
+    id: "bucket_storage",
+    href: "/services?category=bucket_storage",
     icon: <LucideImage className="size-4" />,
   },
   {
     name: "Serverless",
+    id: "serverless",
     href: "/services?category=serverless",
     icon: <LucideServer className="size-4" />,
   },

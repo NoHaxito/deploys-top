@@ -35,9 +35,7 @@ export function DesktopMenu() {
     return categories.slice(0, 4);
   }, []);
   const first_6_free_providers = React.useMemo(() => {
-    return providers
-      .filter((provider) => provider.free_tier !== null)
-      .slice(0, 6);
+    return providers.filter((provider) => provider.as_free_tier).slice(0, 6);
   }, []);
   return (
     <NavigationMenu className="hidden md:flex">
@@ -47,7 +45,7 @@ export function DesktopMenu() {
             Free Providers
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-1 p-4 w-[400px] xl:w-[500px] grid-cols-1 xl:grid-cols-2">
+            <ul className="grid w-[400px] grid-cols-1 gap-1 p-4 xl:w-[500px] xl:grid-cols-2">
               {first_6_free_providers.map((provider) => (
                 <ListItem
                   key={provider.name
@@ -67,7 +65,7 @@ export function DesktopMenu() {
               <Link
                 className={cn(
                   buttonVariants({ variant: "link" }),
-                  "text-center col-span-full",
+                  "col-span-full text-center",
                 )}
                 href="/providers?free"
               >
@@ -81,7 +79,7 @@ export function DesktopMenu() {
             Categories
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-1 p-4 w-[350px] grid-cols-2">
+            <ul className="grid w-[350px] grid-cols-2 gap-1 p-4">
               {first_4_categories.map((category) => (
                 <ListItem
                   key={category.name
@@ -96,7 +94,7 @@ export function DesktopMenu() {
               <Link
                 className={cn(
                   buttonVariants({ variant: "link" }),
-                  "text-center col-span-full",
+                  "col-span-full text-center",
                 )}
                 href="/providers?categories"
               >
@@ -105,7 +103,7 @@ export function DesktopMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="pointer-events-none opacity-50">
           <Link href="/compare" legacyBehavior passHref>
             <NavigationMenuLink
               active={pathname === "/compare"}
@@ -113,7 +111,7 @@ export function DesktopMenu() {
                 className: "h-8 bg-transparent",
               })}
             >
-              Compare providers
+              Compare providers (Soon)
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
@@ -126,24 +124,21 @@ export function MobileMenu() {
     return categories.slice(0, 4);
   }, []);
   const first_6_free_providers = React.useMemo(() => {
-    return providers
-      .filter((provider) => provider.free_tier !== null)
-      .slice(0, 6);
+    return providers.filter((provider) => provider.as_free_tier).slice(0, 6);
   }, []);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="group h-8 w-8 whitespace-nowrap overflow-hidden sm:w-max flex md:hidden"
+          className="group flex h-8 w-8 overflow-hidden whitespace-nowrap sm:w-max md:hidden"
         >
-          <div className="relative group flex flex-col gap-1">
-            <div className="w-4 h-px group-data-[state=open]:-rotate-45 group-data-[state=open]:translate-y-1 transition-transform bg-foreground rounded-lg" />
-            <div className="w-4 h-px bg-foreground group-data-[state=open]:w-0 transition-[width] rounded-lg" />
-            <div className="w-4 h-px bg-foreground group-data-[state=open]:rotate-45 group-data-[state=open]:-translate-y-[5.5px] transition-transform rounded-lg" />
+          <div className="group relative flex flex-col gap-1">
+            <div className="h-px w-4 rounded-lg bg-foreground transition-transform duration-300 ease-in-out group-data-[state=open]:translate-y-0.5 group-data-[state=open]:rotate-[45deg]" />
+            <div className="h-px w-4 rounded-lg bg-foreground transition-transform duration-300 ease-in-out group-data-[state=open]:-translate-y-[2.8px] group-data-[state=open]:-rotate-[45deg]" />
           </div>
           <span className="sr-only">Toggle menu</span>
-          <p className="hidden sm:block group-data-[state=open]:after:content-['Close_Menu'] after:content-['Open_Menu']"></p>
+          <p className="hidden after:content-['Open_Menu'] group-data-[state=open]:after:content-['Close_Menu'] sm:block"></p>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="mr-1 sm:min-w-40">
@@ -180,7 +175,7 @@ export function MobileMenu() {
           >
             Free Providers
           </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent className="mr-1 max-w-40 sm:min-w-40">
+          <DropdownMenuSubContent className="mr-1 max-w-44 sm:min-w-40">
             {first_6_free_providers.map((provider) => (
               <DropdownMenuItem
                 asChild
@@ -209,10 +204,11 @@ export function MobileMenu() {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuItem
+          disabled
           asChild
           icon={<LucideGitCompareArrows className="size-4" />}
         >
-          <Link href="/compare">Compare</Link>
+          <Link href="/compare">Compare (Soon)</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -232,7 +228,7 @@ const ListItem = React.forwardRef<
         <Link
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors duration-300 data-[active]:bg-accent hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent",
             className,
           )}
           href={href!}

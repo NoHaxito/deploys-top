@@ -18,8 +18,8 @@ import {
 import { providers } from "@/lib/data";
 
 export const metadata = {
-  title: "Providers - Deploys.top",
-  description: "Take a look at the list of providers we've gathered info on.",
+  title: "Providers",
+  description: "Search and compare free and paid providers.",
 };
 
 export default function ProvidersPage() {
