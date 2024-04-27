@@ -82,15 +82,12 @@ export function DesktopMenu() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[350px] grid-cols-2 gap-1 p-4">
-              {first_4_categories.map((category) => (
+              {first_4_categories.map(({ name, icon: Icon, href }) => (
                 <ListItem
-                  key={category.name
-                    .toLowerCase()
-                    .replace(" ", "-")
-                    .replace(".", "-")}
-                  icon={category.icon}
-                  href={category.href}
-                  title={category.name}
+                  key={name.toLowerCase().replace(" ", "-").replace(".", "-")}
+                  icon={<Icon className="size-4" />}
+                  href={href}
+                  title={name}
                 />
               ))}
               <Link
@@ -151,16 +148,13 @@ export function MobileMenu() {
             Categories
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent alignOffset={-4} className="mr-1 sm:min-w-40">
-            {first_4_categories.map((category) => (
+            {first_4_categories.map(({ name, href, icon: Icon }) => (
               <DropdownMenuItem
                 asChild
-                key={category.name
-                  .toLowerCase()
-                  .replace(" ", "-")
-                  .replace(".", "-")}
-                icon={category.icon}
+                key={name.toLowerCase().replace(" ", "-").replace(".", "-")}
+                icon={<Icon className="size-4" />}
               >
-                <Link href={category.href}>{category.name}</Link>
+                <Link href={href}>{name}</Link>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />

@@ -1,15 +1,15 @@
 import {
   LucideDatabase,
+  LucideIcon,
   LucideImage,
   LucideServer,
   LucideZap,
 } from "lucide-react";
-import { ReactNode } from "react";
 
 export interface Category {
   name: string;
   href: string;
-  icon: ReactNode;
+  icon: LucideIcon;
   id: string;
 }
 export interface Provider {
@@ -132,7 +132,7 @@ export const providers: Provider[] = [
             },
           ],
         },
-      },  
+      },
       {
         category_name: "bucket_storage",
         name: "Cloudflare R2",
@@ -398,24 +398,24 @@ export const categories: Category[] = [
     name: "Deployments",
     id: "deployments",
     href: "/services?category=deployments",
-    icon: <LucideZap className="size-4" />,
+    icon: LucideZap,
   },
   {
     name: "Databases",
     id: "databases",
     href: "/services?category=databases",
-    icon: <LucideDatabase className="size-4" />,
+    icon: LucideDatabase,
   },
   {
     name: "Bucket Storage",
     id: "bucket_storage",
     href: "/services?category=bucket_storage",
-    icon: <LucideImage className="size-4" />,
+    icon: LucideImage,
   },
   {
     name: "Serverless",
     id: "serverless",
     href: "/services?category=serverless",
-    icon: <LucideServer className="size-4" />,
+    icon: LucideServer,
   },
 ];
