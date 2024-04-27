@@ -45,7 +45,7 @@ export function DesktopMenu() {
             Free Providers
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] grid-cols-1 gap-1 p-4 xl:w-[500px] xl:grid-cols-2">
+            <ul className="grid h-64 w-[400px] grid-cols-1 gap-1 overflow-y-auto p-4 xl:h-max xl:w-[500px] xl:grid-cols-2">
               {first_6_free_providers.map((provider) => (
                 <ListItem
                   key={provider.name
@@ -62,15 +62,17 @@ export function DesktopMenu() {
                   {provider.description}
                 </ListItem>
               ))}
-              <Link
-                className={cn(
-                  buttonVariants({ variant: "link" }),
-                  "col-span-full text-center",
-                )}
-                href="/providers?free"
-              >
-                See all free providers ({providers.length})
-              </Link>
+              <div className="sticky -bottom-3.5 col-span-full flex items-center justify-center bg-background">
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    " text-center",
+                  )}
+                  href="/providers?free"
+                >
+                  See all free providers ({providers.length})
+                </Link>
+              </div>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>

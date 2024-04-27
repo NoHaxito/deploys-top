@@ -22,7 +22,7 @@ export interface Provider {
   as_free_tier: boolean;
   is_serverless: boolean;
 }
-interface ServiceOffered {
+export interface ServiceOffered {
   category_name?: string;
   name: string;
   description?: string;
@@ -32,12 +32,6 @@ interface ServiceOffered {
   };
   disabled?: boolean; // for avoiding modal open
 }
-// interface ServiceFreeTier {
-//   services_included: {
-//     name: string;
-//     description: string;
-//   }[];
-// }
 
 export const providers: Provider[] = [
   {
@@ -138,7 +132,7 @@ export const providers: Provider[] = [
             },
           ],
         },
-      },
+      },  
       {
         category_name: "bucket_storage",
         name: "Cloudflare R2",
@@ -306,7 +300,7 @@ export const providers: Provider[] = [
     description: "Cloud application hosting for developers.",
     href: "https://render.com",
     pricing_href: "https://render.com/pricing",
-    icon: "https://cdn.sanity.io/images/hvk0tap5/production/c4fd92ad649864b4aa2d4985072b9779bd7e8119-128x128.png?fit=max&auto=format",
+    icon: "https://cdn.nohaxito.xyz/render-logo.webp",
     services_offered: [
       {
         category_name: "deployments",

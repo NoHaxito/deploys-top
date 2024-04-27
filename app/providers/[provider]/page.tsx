@@ -1,14 +1,9 @@
-import {
-  LucideChevronLeft,
-  LucideChevronRight,
-  LucideDollarSign,
-  LucideGlobe,
-  LucideInfo,
-} from "lucide-react";
+import { LucideChevronLeft, LucideInfo } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProviderHeader } from "@/components/provider-header";
+import { ProviderServiceDialog } from "@/components/provider-service-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,6 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { providers } from "@/lib/data";
+// import { SupportedTypesPopover } from "./_test";
 
 export function generateMetadata({
   params,
@@ -53,6 +49,11 @@ export default function ProviderPage({
       params.provider.toLowerCase(),
   );
   if (!provider) return notFound();
+  const providerCategories = [
+    ...new Set(
+      provider.services_offered.map(({ category_name }) => category_name!),
+    ),
+  ];
 
   return (
     <div className="space-y-6">
@@ -70,16 +71,20 @@ export default function ProviderPage({
       <section id="provider-categories" className="space-y-2">
         <h3 className="text-lg font-bold">Categories</h3>
         <div className="space-x-0.5">
-          {provider.services_offered.map(({ category_name }) => {
+          {providerCategories.map((category_name) => {
             if (!category_name) return;
             return (
-              <Badge
-                variant="secondary"
+              <Link
+                href={`/providers?category=${category_name.toLowerCase().replaceAll(" ", "-").replace(".", "-")}`}
                 key={category_name.toLowerCase().replaceAll(" ", "-")}
-                className="h-8 rounded-lg capitalize"
               >
-                {category_name?.replaceAll("_", " ")}
-              </Badge>
+                <Badge
+                  variant="secondary"
+                  className="h-8 rounded-lg capitalize"
+                >
+                  {category_name?.replaceAll("_", " ")}
+                </Badge>
+              </Link>
             );
           })}
           {provider.is_serverless && (
@@ -102,33 +107,55 @@ export default function ProviderPage({
             </PopoverContent>
           </Popover>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid h-full gap-4 sm:grid-cols-2">
           {provider.services_offered.map((service) => (
-            <Card className="relative" key={service.name.toLowerCase()}>
-              <div className="absolute -top-2.5 right-2 rounded-lg border bg-background px-2 py-0.5 text-xs">
-                Free Tier
-              </div>
-              <CardHeader className="px-4 py-3">
-                <CardTitle className="text-md capitalize">
-                  {service.name}
-                </CardTitle>
-                <CardDescription>
-                  {service.description ??
-                    "No description provided for this service."}
-                </CardDescription>
-              </CardHeader>
-              <CardFooter className="px-4 py-3 pt-0">
-                {service.supported_types && (
-                  <div className="flex flex-wrap gap-0.5">
-                    {service.supported_types?.map((type) => (
-                      <Badge variant="outline" key={type}>
-                        {type}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </CardFooter>
-            </Card>
+            <ProviderServiceDialog
+              service={service}
+              provider={provider}
+              key={service.name.toLowerCase()}
+            >
+              <Card className="relative">
+                <div className="absolute -top-2.5 right-2 rounded-lg border bg-background px-2 py-0.5 text-xs">
+                  Free Tier
+                </div>
+                <CardHeader className="px-4 py-3">
+                  <CardTitle className="text-md capitalize">
+                    {service.name}
+                  </CardTitle>
+                  <CardDescription>
+                    {service.description ??
+                      "No description provided for this service."}
+                  </CardDescription>
+                </CardHeader>
+                <CardFooter className="px-4 py-3 pt-0">
+                  {service.supported_types && (
+                    <>
+                      <div className="xs:flex hidden gap-0.5 overflow-hidden whitespace-nowrap">
+                        {service.supported_types?.map((type) => (
+                          <Badge variant="outline" key={type}>
+                            {type}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="xs:hidden flex flex-wrap gap-0.5">
+                        <Badge variant="outline">
+                          {service.supported_types?.[0]}
+                        </Badge>
+
+                        {service.supported_types?.length > 1 && (
+                          <Badge
+                            title={`${service.supported_types.join(", ")}`}
+                            variant="outline"
+                          >
+                            +{service.supported_types?.length - 1} more
+                          </Badge>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </CardFooter>
+              </Card>
+            </ProviderServiceDialog>
           ))}
         </div>
         {/* <p>Free tier included:</p> */}

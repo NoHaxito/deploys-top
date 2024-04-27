@@ -1,5 +1,5 @@
 import { LucideFilter } from "lucide-react";
-import Link from "next/link";
+import { ProviderCard } from "@/components/provider-card";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -42,13 +42,13 @@ export default function ProvidersPage() {
                     aria-label="Toggle columns"
                     variant="outline"
                     size="sm"
-                    className="ml-auto h-8"
+                    className="ml-auto h-8 bg-background"
                   >
                     <LucideFilter className="size-4" />
                     Filter
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuLabel>Filter providers</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuCheckboxItem className="capitalize" checked>
@@ -79,27 +79,13 @@ export default function ProvidersPage() {
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {providers.map((provider) => (
-                <Link
-                  key={provider.name.toLowerCase()}
-                  href={`/providers/${provider.name.toLowerCase()}`}
-                  className="h-full"
-                >
-                  <div className="flex h-full gap-4 rounded-lg border border-transparent bg-neutral-100 p-4 shadow-lg transition-[border] hover:border-primary dark:bg-neutral-900">
-                    <img
-                      loading="lazy"
-                      draggable={false}
-                      src={provider.icon}
-                      className="size-8"
-                      alt={`${provider.name} provider logo`}
-                    />
-                    <div>
-                      <p className="font-bold">{provider.name}</p>
-                      <span className="line-clamp-2 text-sm text-muted-foreground">
-                        {provider.description}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                <ProviderCard
+                  key={provider.name
+                    .toLowerCase()
+                    .replace(" ", "-")
+                    .replace(".", "-")}
+                  provider={provider}
+                />
               ))}
             </div>
           </>

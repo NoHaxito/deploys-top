@@ -5,8 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { GithubIcon } from "./icons/github";
 import { DesktopMenu, MobileMenu } from "./menu";
 import { ThemeToggle } from "./theme-toggle";
+import { buttonVariants } from "./ui/button";
 
 export function Header() {
   const pathname = usePathname();
@@ -40,10 +42,21 @@ export function Header() {
             </span>
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-2">
+        <div className="flex flex-1 items-center justify-end space-x-1">
           <DesktopMenu />
           <MobileMenu />
           <ThemeToggle />
+          <Link
+            href="https://github.com/nohaxito/deploys-top"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "icon" }),
+              "size-8",
+            )}
+          >
+            <GithubIcon className="size-4" />
+          </Link>
         </div>
       </div>
     </header>

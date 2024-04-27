@@ -14,14 +14,14 @@ import { cn } from "@/lib/utils";
 
 export function ProviderHeader({ provider }: { provider: Provider }) {
   const { isIntersecting, ref } = useIntersectionObserver({
-    threshold: 0.2,
+    threshold: 0.5,
     initialIsIntersecting: true,
   });
   return (
     <>
       <div
         ref={ref}
-        className="relative flex h-[15rem] w-full flex-col items-center justify-center"
+        className="relative flex h-[14rem] w-full flex-col items-center justify-center"
       >
         <img
           loading="lazy"
@@ -72,11 +72,10 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
           </div>
         </div>
       </div>
-
       <div
         className={cn(
-          !isIntersecting ? "z-40 !translate-y-0" : "-z-10 -translate-y-14",
-          "fixed inset-x-0 top-14 h-12 w-full -translate-y-14 border-b bg-background/95 p-2 backdrop-blur transition-all duration-500 supports-[backdrop-filter]:bg-background/60",
+          !isIntersecting ? "z-40 !-translate-y-[1.5rem]" : "-z-10 -translate-y-16",
+          "fixed inset-x-0 top-[4rem] h-12 w-full -translate-y-16 border-b bg-background/95 p-2 backdrop-blur transition-all duration-500 supports-[backdrop-filter]:bg-background/60",
         )}
       >
         <div className="container flex max-w-screen-lg items-center justify-between gap-2">
