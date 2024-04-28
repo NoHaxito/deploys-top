@@ -2,9 +2,7 @@ import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { providers } from "@/lib/data";
 
-export const config = {
-  runtime: "edge",
-};
+export const runtime = "edge";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -13,7 +11,6 @@ export async function GET(req: NextRequest) {
     (p) =>
       p.name.toLowerCase().replaceAll(" ", "-").replace(".", "-") === provider,
   )?.icon;
-  console.log(providerLogo);
   if (!provider) {
     return new ImageResponse(
       (
