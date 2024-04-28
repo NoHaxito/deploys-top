@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { providers } from "@/lib/data";
+
 // import { SupportedTypesPopover } from "./_test";
 
 export function generateMetadata({
@@ -35,6 +36,28 @@ export function generateMetadata({
   return {
     title: provider?.name,
     description: "Search and compare free and paid providers.",
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: "https://deploy.nohaxito.xyz",
+      title: `${provider?.name} - Deploys.top`,
+      description: "Search and compare free and paid providers.",
+      siteName: "Deploys.top",
+      images: [
+        {
+          url: "https://deploy.nohaxito.xyz/api/og",
+          width: 1200,
+          height: 630,
+          alt: "Deploys.top",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${provider?.name} - Deploys.top`,
+      description: "Search and compare free and paid providers.",
+      images: ["https://deploy.nohaxito.xyz/api/og"],
+    },
   };
 }
 
@@ -130,14 +153,14 @@ export default function ProviderPage({
                 <CardFooter className="px-4 py-3 pt-0">
                   {service.supported_types && (
                     <>
-                      <div className="xs:flex hidden gap-0.5 overflow-hidden whitespace-nowrap">
+                      <div className="hidden gap-0.5 overflow-hidden whitespace-nowrap xs:flex">
                         {service.supported_types?.map((type) => (
                           <Badge variant="outline" key={type}>
                             {type}
                           </Badge>
                         ))}
                       </div>
-                      <div className="xs:hidden flex flex-wrap gap-0.5">
+                      <div className="flex flex-wrap gap-0.5 xs:hidden">
                         <Badge variant="outline">
                           {service.supported_types?.[0]}
                         </Badge>

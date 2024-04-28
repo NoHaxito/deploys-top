@@ -14,6 +14,28 @@ export const metadata: Metadata = {
   icons: {
     icon: "/deploys-top.png",
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://deploy.nohaxito.xyz",
+    title: "Deploys.top",
+    description: "Search and compare free and paid providers.",
+    siteName: "Deploys.top",
+    images: [
+      {
+        url: "https://deploy.nohaxito.xyz/api/og",
+        width: 1200,
+        height: 630,
+        alt: "Deploys.top",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Deploys.top",
+    description: "Search and compare free and paid providers.",
+    images: ["https://deploy.nohaxito.xyz/api/og"],
+  },
 };
 
 export default function RootLayout({
