@@ -162,8 +162,8 @@ export const providers: Provider[] = [
     name: "Netlify",
     description: " Scale & Ship Faster with a Composable Web Architecture.",
     href: "https://netlify.com",
-    pricing_href: "https://cloudflare.com/plans",
-    icon: "https://www.netlify.com/favicon/icon.svg",
+    pricing_href: "https://netlify.com/pricing",
+    icon: "https://cdn.nohaxito.xyz/netlify-logo.svg",
     services_offered: [
       {
         category_name: "deployments",
@@ -216,7 +216,7 @@ export const providers: Provider[] = [
     description: "The open source Firebase alternative.",
     href: "https://supabase.com",
     pricing_href: "https://supabase.com/pricing",
-    icon: "https://supabase.com/favicon/favicon-32x32.png",
+    icon: "https://cdn.nohaxito.xyz/supabase-logo.svg",
     services_offered: [
       {
         category_name: "authentication",
@@ -265,7 +265,7 @@ export const providers: Provider[] = [
     description: "Deploy Painlessly, Scale Infinitely.",
     href: "https://zeabur.com",
     pricing_href: "https://zeabur.com/pricing",
-    icon: "https://zeabur.com/favicon.svg",
+    icon: "https://cdn.nohaxito.xyz/zeabur-logo.svg",
     services_offered: [
       {
         category_name: "deployments",

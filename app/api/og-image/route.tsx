@@ -43,8 +43,8 @@ export async function GET(req: NextRequest) {
         </div>
       ),
       {
-        width: 800,
-        height: 430,
+        width: 1280,
+        height: 720,
       },
     );
   }
@@ -66,11 +66,12 @@ export async function GET(req: NextRequest) {
       >
         <div tw="flex items-center flex-col" style={{ gap: "1rem" }}>
           <div tw="flex items-center" style={{ gap: "1rem" }}>
-            <img src={providerLogo} width={80} height={80} tw="h-20 w-20" />
+            <img src={providerLogo} tw="w-[75px] h-[75px]" />
             <span tw="text-3xl font-bold text-white">›</span>
             <img
               src="https://deploy.nohaxito.xyz/deploys-top.png"
-              tw="h-20 w-20"
+              width={80}
+              height={80}
             />
           </div>
           <span tw="text-neutral-200 text-2xl text-center ">
@@ -80,8 +81,8 @@ export async function GET(req: NextRequest) {
       </div>
     ),
     {
-      width: 800,
-      height: 430,
+      width: 1280,
+      height: 720,
     },
   );
 }
