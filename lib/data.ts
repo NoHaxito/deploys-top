@@ -84,7 +84,7 @@ export const providers: Provider[] = [
         pricing: {
           free_tier: [
             {
-              type: "",
+              type: "Bla bla bla",
               included: "60 hours",
             },
           ],

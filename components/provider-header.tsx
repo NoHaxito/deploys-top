@@ -23,11 +23,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
         ref={ref}
         className="relative flex h-[14rem] w-full flex-col items-center justify-center"
       >
-        <img
-          loading="lazy"
-          src={provider.icon}
-          className="aspect-square size-14"
-        />
+        <img src={provider.icon} className="size-14" />
         <h1 className="mt-2 text-lg font-bold tracking-tight md:text-3xl">
           {provider.name}
         </h1>
@@ -74,7 +70,9 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
       </div>
       <div
         className={cn(
-          !isIntersecting ? "z-40 !-translate-y-[1.5rem]" : "-z-10 -translate-y-16",
+          !isIntersecting
+            ? "z-40 !-translate-y-[1.5rem]"
+            : "-z-10 -translate-y-16",
           "fixed inset-x-0 top-[4rem] h-12 w-full -translate-y-16 border-b bg-background/95 p-2 backdrop-blur transition-all duration-500 supports-[backdrop-filter]:bg-background/60",
         )}
       >
