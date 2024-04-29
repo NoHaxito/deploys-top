@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "Deploys.top",
     images: [
       {
-        url: "https://deploy.nohaxito.xyz/api/og",
+        url: "https://deploy.nohaxito.xyz/api/og-image",
         width: 1200,
         height: 630,
         alt: "Deploys.top",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Deploys.top",
     description: "Search and compare free and paid providers.",
-    images: ["https://deploy.nohaxito.xyz/api/og"],
+    images: ["https://deploy.nohaxito.xyz/api/og-image"],
   },
 };
 
