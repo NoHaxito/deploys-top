@@ -25,6 +25,8 @@ export const metadata = {
   description: "Search and compare free and paid providers.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function ProvidersPage() {
   const providersSanity = await client.fetch<SanityDocument[]>(
     queries.allProviders,
