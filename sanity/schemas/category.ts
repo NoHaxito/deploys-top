@@ -1,8 +1,10 @@
+import { LucideSquareLibrary } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
 export const categorySchema = defineType({
   name: "category",
   title: "Category",
+  icon: LucideSquareLibrary,
   type: "document",
   fields: [
     defineField({

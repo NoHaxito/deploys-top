@@ -1,24 +1,22 @@
 import { defineField, defineType } from "sanity";
+import { LucideLayoutPanelLeft } from "lucide-react";
 
 export const providerSchema = defineType({
   name: "provider",
   title: "Provider",
+  icon: LucideLayoutPanelLeft,
   type: "document",
   fields: [
-    // defineField({
-    //   name: "category_name",
-    //   type: "string",
-    //   validation: (rule) => rule.required(),
-    // }),
     defineField({
       name: "categories",
       type: "array",
-      of: [defineField({
-        name: "category_name",
-        type: "reference",
-        to: [{ type: "category" }],
-        
-      })],
+      of: [
+        defineField({
+          name: "category_name",
+          type: "reference",
+          to: [{ type: "category" }],
+        }),
+      ],
     }),
     defineField({
       name: "name",
