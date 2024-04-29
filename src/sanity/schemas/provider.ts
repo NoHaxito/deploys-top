@@ -15,6 +15,7 @@ export const providerSchema = defineType({
           name: "category_name",
           type: "reference",
           to: [{ type: "category" }],
+          weak: true,
         }),
       ],
     }),
@@ -54,6 +55,8 @@ export const providerSchema = defineType({
               name: "category_name",
               type: "string",
               validation: (rule) => rule.required(),
+              description:
+                "This name must be match with the 'id' from the 'Category' document.",
             },
             {
               name: "name",
@@ -79,14 +82,30 @@ export const providerSchema = defineType({
                   of: [
                     {
                       type: "object",
+                      description:
+                        "Fill the necessary fields, don't fill with unkown data.",
                       fields: [
-                        { name: "type", type: "string" },
-                        { name: "included", type: "string" },
+                        {
+                          name: "type",
+                          type: "string",
+                          validation: (rule) => rule.required(),
+                        },
+                        {
+                          name: "included",
+                          type: "string",
+                          validation: (rule) => rule.required(),
+                        },
+                        { name: "price_per_gb", type: "string" },
                       ],
                     },
                   ],
                 },
               ],
+            },
+            {
+              name: "disabled",
+              type: "boolean",
+              initialValue: false,
             },
           ],
         },

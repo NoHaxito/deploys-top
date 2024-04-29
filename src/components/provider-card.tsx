@@ -41,7 +41,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <Link
         href={`/providers/${provider.name.toLowerCase().replace(" ", "-").replace(".", "-")}`}
         ref={linkRef}
@@ -50,7 +50,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
         onBlur={handleBlur}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="relative flex gap-4 overflow-hidden rounded-lg border bg-neutral-100 p-4 shadow-lg dark:bg-neutral-900"
+        className="relative h-full flex gap-4 overflow-hidden rounded-lg border bg-neutral-100 p-4 shadow-lg dark:bg-neutral-900"
       >
         <div
           className="pointer-events-none absolute -inset-px hidden opacity-0 transition duration-300 dark:block"
@@ -81,26 +81,19 @@ export function ProviderCard({ provider }: { provider: Provider }) {
         </div>
       </Link>
       <Popover>
-        <PopoverTrigger
-          // onClick={(e) => {
-          //   e.stopPropagation();
-          //   e.preventDefault();
-          // }}
-          asChild
-        >
+        <PopoverTrigger asChild>
           <Button
             onClick={(e) => {
               e.stopPropagation();
-              //   e.preventDefault();
             }}
             size="icon"
             variant="outline"
-            className="absolute z-10 size-7 top-2 right-2 rounded-full border-[#10b981a4] text-foreground hover:bg-[#10B98170]"
+            className="data-[state=open]:bg-[#10B98170] absolute right-2 top-2 z-10 size-6 rounded-full border-[#10b981a4] text-foreground hover:bg-[#10B98170]"
           >
-            <LucideStars className="size-4" />
+            <LucideStars className="size-3" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-max text-sm">
+        <PopoverContent className="w-max text-xs p-2">
           Good Free Tier
         </PopoverContent>
       </Popover>

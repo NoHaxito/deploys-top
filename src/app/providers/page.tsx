@@ -1,4 +1,5 @@
 import { LucideFilter } from "lucide-react";
+import { SanityDocument } from "next-sanity";
 import { ProviderCard } from "@/components/provider-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,13 +17,18 @@ import {
   PageHeaderTitle,
 } from "@/components/ui/page-header";
 import { providers } from "@/lib/data";
+import { queries } from "@/lib/groq-queries";
+import { client } from "@/sanity/lib/client";
 
 export const metadata = {
   title: "Providers",
   description: "Search and compare free and paid providers.",
 };
 
-export default function ProvidersPage() {
+export default async function ProvidersPage() {
+  const providersSanity = await client.fetch<SanityDocument[]>(
+    queries.allProviders,
+  );
   return (
     <div className="space-y-3">
       <PageHeader>
@@ -32,7 +38,7 @@ export default function ProvidersPage() {
         </PageHeaderDescription>
       </PageHeader>
       <div>
-        {providers.length !== 0 ? (
+        {providersSanity.length !== 0 ? (
           <>
             <div className="itmes-center mb-3 flex justify-between gap-2">
               <Input placeholder="Search provider" className="h-8" />
@@ -78,12 +84,13 @@ export default function ProvidersPage() {
               </DropdownMenu>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {providers.map((provider) => (
+              {providersSanity.map((provider) => (
                 <ProviderCard
                   key={provider.name
                     .toLowerCase()
                     .replace(" ", "-")
                     .replace(".", "-")}
+                  // @ts-ignore
                   provider={provider}
                 />
               ))}

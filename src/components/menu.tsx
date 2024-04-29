@@ -3,7 +3,8 @@ import {
   LucideGitCompareArrows,
   LucideLayoutGrid,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { SanityDocument } from "next-sanity";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -15,8 +16,10 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { providers, categories } from "@/lib/data";
+import { type Provider } from "@/lib/data";
+import { queries } from "@/lib/groq-queries";
 import { cn } from "@/lib/utils";
+import { client } from "@/sanity/lib/client";
 import { Button, buttonVariants } from "./ui/button";
 import {
   DropdownMenu,
@@ -30,13 +33,28 @@ import {
 } from "./ui/dropdown-menu";
 
 export function DesktopMenu() {
+  const [providers, setProviders] = React.useState<Provider[]>([]);
+  const [categories, setCategories] = React.useState<
+    { name: string; id: string; icon: string }[]
+  >([]);
+  useEffect(() => {
+    async function getCategories() {
+      const cs = await client.fetch<
+        { name: string; id: string; icon: string }[]
+      >(queries.allCategories);
+      return cs;
+    }
+    async function getFreeProviders() {
+      const ps = await client.fetch<Provider[]>(queries.freeProviders);
+      return ps;
+    }
+    getFreeProviders().then((data) => setProviders(data));
+    getCategories().then((data) => setCategories(data));
+  }, []);
+
   const pathname = usePathname();
-  const first_4_categories = React.useMemo(() => {
-    return categories.slice(0, 4);
-  }, []);
-  const first_6_free_providers = React.useMemo(() => {
-    return providers.filter((provider) => provider.as_free_tier).slice(0, 6);
-  }, []);
+  const first_4_categories = categories.slice(0, 4);
+  const first_6_free_providers = providers.slice(0, 6);
   return (
     <NavigationMenu className="hidden md:flex">
       <NavigationMenuList>
@@ -82,11 +100,11 @@ export function DesktopMenu() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[350px] grid-cols-2 gap-1 p-4">
-              {first_4_categories.map(({ name, icon: Icon, href }) => (
+              {first_4_categories.map(({ id, name, icon: Icon }) => (
                 <ListItem
-                  key={name.toLowerCase().replace(" ", "-").replace(".", "-")}
-                  icon={<Icon className="size-4" />}
-                  href={href}
+                  key={id}
+                  // icon={<Icon className="size-4" />}
+                  href={`/providers?filter.category=${id}`}
                   title={name}
                 />
               ))}
@@ -119,12 +137,26 @@ export function DesktopMenu() {
   );
 }
 export function MobileMenu() {
-  const first_4_categories = React.useMemo(() => {
-    return categories.slice(0, 4);
+  const [providers, setProviders] = React.useState<Provider[]>([]);
+  const [categories, setCategories] = React.useState<
+    { name: string; id: string; icon: string }[]
+  >([]);
+  useEffect(() => {
+    async function getCategories() {
+      const cs = await client.fetch<
+        { name: string; id: string; icon: string }[]
+      >(queries.allCategories);
+      return cs;
+    }
+    async function getFreeProviders() {
+      const ps = await client.fetch<Provider[]>(queries.freeProviders);
+      return ps;
+    }
+    getFreeProviders().then((data) => setProviders(data));
+    getCategories().then((data) => setCategories(data));
   }, []);
-  const first_6_free_providers = React.useMemo(() => {
-    return providers.filter((provider) => provider.as_free_tier).slice(0, 6);
-  }, []);
+  const first_4_categories = categories.slice(0, 4);
+  const first_6_free_providers = providers.slice(0, 6);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -148,13 +180,13 @@ export function MobileMenu() {
             Categories
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent alignOffset={-4} className="mr-1 sm:min-w-40">
-            {first_4_categories.map(({ name, href, icon: Icon }) => (
+            {first_4_categories.map(({ name, id, icon: Icon }) => (
               <DropdownMenuItem
                 asChild
-                key={name.toLowerCase().replace(" ", "-").replace(".", "-")}
-                icon={<Icon className="size-4" />}
+                key={id}
+                // icon={<Icon className="size-4" />}
               >
-                <Link href={href}>{name}</Link>
+                <Link href={`/providers?filter.category=${id}`}>{name}</Link>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
@@ -231,7 +263,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="flex items-center gap-2">
-            {typeof icon === "string" ? (
+            {icon && typeof icon === "string" ? (
               <img loading="lazy" src={icon} className="size-8 min-w-8" />
             ) : (
               icon

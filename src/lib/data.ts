@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LucideDatabase,
   LucideIcon,
@@ -13,6 +14,11 @@ export interface Category {
   id: string;
 }
 export interface Provider {
+  categories: {
+    name: string;
+    icon: string;
+    id: string;
+  }[];
   name: string;
   description: string;
   icon: string;
