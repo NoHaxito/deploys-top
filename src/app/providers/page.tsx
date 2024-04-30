@@ -24,7 +24,7 @@ export const metadata = {
   title: "Providers",
   description: "Search and compare free and paid providers.",
 };
-
+export const revalidate = 10;
 export const dynamic = "force-dynamic";
 
 export default async function ProvidersPage() {
