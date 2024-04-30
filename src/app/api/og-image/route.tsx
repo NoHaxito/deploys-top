@@ -32,11 +32,11 @@ export async function GET(req: NextRequest) {
             <div tw="flex items-center" style={{ gap: "1rem" }}>
               <img
                 src="https://deploy.nohaxito.xyz/deploys-top.png"
-                tw="h-28 w-28"
+                tw="h-42 w-42"
               />
-              <h1 tw="text-6xl text-white font-extrabold">Deploys.top</h1>
+              <h1 tw="text-7xl text-white font-extrabold">Deploys.top</h1>
             </div>
-            <span tw="text-neutral-200 text-2xl text-center ">
+            <span tw="text-neutral-200 text-4xl text-center ">
               Compare your favorite providers
             </span>
           </div>
@@ -66,15 +66,15 @@ export async function GET(req: NextRequest) {
       >
         <div tw="flex items-center flex-col" style={{ gap: "1rem" }}>
           <div tw="flex items-center" style={{ gap: "1rem" }}>
-            <img src={providerLogo} tw="w-[75px] h-[75px]" />
+            <img src={providerLogo} tw="w-[150px] h-[150px]" />
             <span tw="text-3xl font-bold text-white">›</span>
             <img
               src="https://deploy.nohaxito.xyz/deploys-top.png"
-              width={80}
-              height={80}
+              width={150}
+              height={150}
             />
           </div>
-          <span tw="text-neutral-200 text-2xl text-center ">
+          <span tw="text-neutral-200 text-4xl text-center ">
             Compare your favorite providers
           </span>
         </div>
