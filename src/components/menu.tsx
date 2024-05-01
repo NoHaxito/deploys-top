@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { type Provider } from "@/lib/data";
 import { queries } from "@/lib/groq-queries";
+import { LucideIcon } from "@/lib/lucide-icon";
 import { cn } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { Button, buttonVariants } from "./ui/button";
@@ -70,7 +71,7 @@ export function DesktopMenu() {
                     .toLowerCase()
                     .replace(" ", "-")
                     .replace(".", "-")}
-                  icon={provider.icon}
+                  providerIcon={provider.icon}
                   href={`/providers/${provider.name
                     .toLowerCase()
                     .replace(" ", "-")
@@ -86,7 +87,7 @@ export function DesktopMenu() {
                     buttonVariants({ variant: "link" }),
                     " text-center",
                   )}
-                  href="/providers?free"
+                  href="/providers?filter.freeProviders=true"
                 >
                   See all free providers ({providers.length})
                 </Link>
@@ -99,11 +100,11 @@ export function DesktopMenu() {
             Categories
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[350px] grid-cols-2 gap-1 p-4">
-              {first_4_categories.map(({ id, name, icon: Icon }) => (
+            <ul className="grid w-[400px] grid-cols-2 gap-1 p-4">
+              {first_4_categories.map(({ id, name, icon }) => (
                 <ListItem
                   key={id}
-                  // icon={<Icon className="size-4" />}
+                  categoryIcon={icon}
                   href={`/providers?filter.category=${id}`}
                   title={name}
                 />
@@ -120,7 +121,7 @@ export function DesktopMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="pointer-events-none opacity-50">
+        {/* <NavigationMenuItem className="pointer-events-none opacity-50">
           <Link href="/compare" legacyBehavior passHref>
             <NavigationMenuLink
               active={pathname === "/compare"}
@@ -131,7 +132,7 @@ export function DesktopMenu() {
               Compare providers (Soon)
             </NavigationMenuLink>
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );
@@ -175,30 +176,6 @@ export function MobileMenu() {
       <DropdownMenuContent align="start" className="mr-1 sm:min-w-40">
         <DropdownMenuSub>
           <DropdownMenuSubTrigger
-            icon={<LucideLayoutGrid className="size-4" />}
-          >
-            Categories
-          </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent alignOffset={-4} className="mr-1 sm:min-w-40">
-            {first_4_categories.map(({ name, id, icon: Icon }) => (
-              <DropdownMenuItem
-                asChild
-                key={id}
-                // icon={<Icon className="size-4" />}
-              >
-                <Link href={`/providers?filter.category=${id}`}>{name}</Link>
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild className="text-xs">
-              <Link href="/providers?categories">
-                See all categories ({categories.length})
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger
             icon={<LucideDollarSign className="size-4" />}
           >
             Free Providers
@@ -216,28 +193,55 @@ export function MobileMenu() {
                 <Link
                   href={`/providers/${provider.name
                     .toLowerCase()
-                    .replace(" ", "-")
-                    .replace(".", "-")}`}
+                    .replaceAll(" ", "-")
+                    .replaceAll(".", "-")}`}
                 >
-                  {provider.name}
+                  <span className="line-clamp-1">{provider.name}</span>
                 </Link>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="text-xs">
-              <Link href="/providers?free">
+              <Link href="/providers?filter.freeProviders=true">
                 See all free providers ({providers.length})
               </Link>
             </DropdownMenuItem>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
-        <DropdownMenuItem
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger
+            icon={<LucideLayoutGrid className="size-4" />}
+          >
+            Categories
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent alignOffset={-4} className="mr-1 sm:min-w-40">
+            {first_4_categories.map(({ name, id, icon }) => (
+              <DropdownMenuItem
+                asChild
+                key={id}
+                icon={
+                  <LucideIcon name={icon} className="size-5 min-h-5 min-w-5" />
+                }
+              >
+                <Link href={`/providers?filter.category=${id}`}>{name}</Link>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem asChild className="text-xs">
+              <Link href="/providers?categories">
+                See all categories ({categories.length})
+              </Link>
+            </DropdownMenuItem> */}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+
+        {/* <DropdownMenuItem
           disabled
           asChild
           icon={<LucideGitCompareArrows className="size-4" />}
         >
           <Link href="/compare">Compare (Soon)</Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -246,40 +250,53 @@ export function MobileMenu() {
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a"> & {
-    icon?: React.ReactNode | string;
+    providerIcon?: string; // because its a image (url)
+    categoryIcon?: string; // name of the icon from lucide.dev
   }
->(({ className, title, children, icon, href, ...props }, ref) => {
-  const pathname = usePathname();
-  return (
-    <li>
-      <NavigationMenuLink asChild active={href === pathname}>
-        <Link
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent",
-            className,
-          )}
-          href={href!}
-          {...props}
-        >
-          <div className="flex items-center gap-2">
-            {icon && typeof icon === "string" ? (
-              <img loading="lazy" src={icon} className="size-8 min-w-8" />
-            ) : (
-              icon
+>(
+  (
+    { className, title, children, providerIcon, categoryIcon, href, ...props },
+    ref,
+  ) => {
+    const pathname = usePathname();
+    return (
+      <li>
+        <NavigationMenuLink asChild active={href === pathname}>
+          <Link
+            ref={ref}
+            className={cn(
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors duration-300 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent",
+              className,
             )}
-            <div>
-              <div className="flex items-center gap-2 text-sm font-medium leading-none">
-                {title}
+            href={href!}
+            {...props}
+          >
+            <div className="flex items-center gap-2">
+              {providerIcon && (
+                <img
+                  src={providerIcon}
+                  className="size-8 min-h-8 min-w-8 mix-blend-lighten"
+                />
+              )}
+              {categoryIcon && (
+                <LucideIcon
+                  name={categoryIcon}
+                  className="size-5 min-h-5 min-w-5"
+                />
+              )}
+              <div>
+                <div className="flex items-center gap-2 text-[15px] font-medium leading-none">
+                  {title}
+                </div>
+                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                  {children}
+                </p>
               </div>
-              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                {children}
-              </p>
             </div>
-          </div>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-});
+          </Link>
+        </NavigationMenuLink>
+      </li>
+    );
+  },
+);
 ListItem.displayName = "ListItem";

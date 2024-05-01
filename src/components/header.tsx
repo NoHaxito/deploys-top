@@ -28,7 +28,7 @@ export function Header() {
       )}
     >
       <div className="container flex h-16 max-w-screen-lg items-center">
-        <div className="mr-4">
+        <div className="mr-2">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Image
               alt="Deploys.top logo"
@@ -42,8 +42,8 @@ export function Header() {
             </span>
           </Link>
         </div>
+        <DesktopMenu />
         <div className="flex flex-1 items-center justify-end space-x-1">
-          <DesktopMenu />
           <MobileMenu />
           <ThemeToggle />
           <Link

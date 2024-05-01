@@ -3,7 +3,7 @@
 import { LucideStars } from "lucide-react";
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { type Provider } from "@/lib/data";
+import { type Provider } from "@/types/provider";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
@@ -43,14 +43,14 @@ export function ProviderCard({ provider }: { provider: Provider }) {
   return (
     <div className="relative h-full">
       <Link
-        href={`/providers/${provider.name.toLowerCase().replace(" ", "-").replace(".", "-")}`}
+        href={`/providers/${provider.name.toLowerCase().replaceAll(" ", "-").replaceAll(".", "-")}`}
         ref={linkRef}
         onMouseMove={handleMouseMove}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="relative h-full flex gap-4 overflow-hidden rounded-lg border bg-neutral-100 p-4 shadow-lg dark:bg-neutral-900"
+        className="relative flex h-full gap-4 overflow-hidden rounded-lg border bg-neutral-100 p-4 shadow-lg dark:bg-neutral-900"
       >
         <div
           className="pointer-events-none absolute -inset-px hidden opacity-0 transition duration-300 dark:block"
@@ -67,10 +67,9 @@ export function ProviderCard({ provider }: { provider: Provider }) {
           }}
         />
         <img
-          loading="lazy"
           draggable={false}
           src={provider.icon}
-          className="size-8"
+          className="size-8 min-h-8 min-w-8"
           alt={`${provider.name} provider logo`}
         />
         <div>
@@ -80,23 +79,25 @@ export function ProviderCard({ provider }: { provider: Provider }) {
           </span>
         </div>
       </Link>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            size="icon"
-            variant="outline"
-            className="data-[state=open]:bg-[#10B98170] absolute right-2 top-2 z-10 size-6 rounded-full border-[#10b981a4] text-foreground hover:bg-[#10B98170]"
-          >
-            <LucideStars className="size-3" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-max text-xs p-2">
-          Good Free Tier
-        </PopoverContent>
-      </Popover>
+      {provider.good_free_tier && (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              size="icon"
+              variant="outline"
+              className="absolute right-2 top-2 z-10 size-6 rounded-full border-[#10b981a4] text-foreground hover:bg-[#10B98170] data-[state=open]:bg-[#10B98170]"
+            >
+              <LucideStars className="size-3" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="mr-1 w-max p-2 text-xs">
+            Good Free Tier
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
 }

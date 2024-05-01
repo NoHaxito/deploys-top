@@ -45,7 +45,7 @@ export function generateMetadata({
       siteName: "Deploys.top",
       images: [
         {
-          url: `https://deploy.nohaxito.xyz/api/og-image?provider=${provider?.name.toLowerCase().replaceAll(' ', '-').replaceAll('.', '-')}`,
+          url: `https://deploy.nohaxito.xyz/api/og-image?provider=${provider?.name.toLowerCase().replaceAll(" ", "-").replaceAll(".", "-")}`,
           width: 1200,
           height: 630,
           alt: "Deploys.top",
@@ -56,7 +56,9 @@ export function generateMetadata({
       card: "summary_large_image",
       title: `${provider?.name} - Deploys.top`,
       description: "Search and compare free and paid providers.",
-      images: [`https://deploy.nohaxito.xyz/api/og-image?provider=${provider?.name.toLowerCase().replaceAll(' ', '-').replaceAll('.', '-')}`],
+      images: [
+        `https://deploy.nohaxito.xyz/api/og-image?provider=${provider?.name.toLowerCase().replaceAll(" ", "-").replaceAll(".", "-")}`,
+      ],
     },
   };
 }

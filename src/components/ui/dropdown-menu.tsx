@@ -97,7 +97,7 @@ const DropdownMenuItem = React.forwardRef<
     {...props}
   >
     {typeof icon === "string" ? (
-      <img loading="lazy" src={icon} className="size-4" />
+      <img src={icon} className="size-5 min-w-5 min-h-5" />
     ) : (
       icon
     )}

@@ -1,9 +1,19 @@
-import "@fontsource-variable/inter";
+// import "@fontsource-variable/inter";
 import React from "react";
 import { Metadata } from "next";
+import localFont from "next/font/local";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
 import "./globals.css";
+
+const interVariable = localFont({
+  variable: "--font-sans",
+  src: "../fonts/InterVariable.woff2",
+  weight: "100 900",
+  display: "swap",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://deploy.nohaxito.xyz"),
@@ -37,6 +47,17 @@ export const metadata: Metadata = {
     description: "Search and compare free and paid providers.",
     images: ["https://deploy.nohaxito.xyz/api/og-image"],
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -49,7 +70,12 @@ export default function RootLayout({
       }}
       lang="en"
     >
-      <body className="min-h-screen bg-background font-['Inter_Variable'] antialiased">
+      <body
+        className={cn(
+          interVariable.variable,
+          "min-h-screen bg-background font-sans antialiased",
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
