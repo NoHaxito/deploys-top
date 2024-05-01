@@ -1,8 +1,8 @@
 "use client";
 
 import {
+  LucideArrowUpRight,
   LucideChevronLeft,
-  LucideChevronRight,
   LucideDollarSign,
   LucideGlobe,
 } from "lucide-react";
@@ -45,7 +45,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
             <Button
               className="group h-8"
               asChild
-              Icon={LucideChevronRight}
+              Icon={LucideArrowUpRight}
               iconPlacement="right"
             >
               <Link href={provider.href} target="_blank">
@@ -57,7 +57,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
               variant="outline"
               className="group h-8"
               asChild
-              Icon={LucideChevronRight}
+              Icon={LucideArrowUpRight}
               iconPlacement="right"
             >
               <Link href={provider.pricing_href} target="_blank">

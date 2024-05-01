@@ -47,6 +47,8 @@ export function ProviderToolbar({
   const categories = providers.flatMap((provider) =>
     provider.categories.map((category) => category),
   ); // refactor to receive via props
+  const isFiltering =
+    filter.query !== "" || filter.category.length > 0 || filter.freeProviders;
   const uniqueCategories: Category[] = Array.from(
     new Set(categories.map((category) => JSON.stringify(category))),
   ).map((category) => JSON.parse(category));
@@ -107,9 +109,10 @@ export function ProviderToolbar({
       router.replace(`${pathname}?${params.toString()}`);
     });
   };
+
   return (
-    <div className="itmes-center mb-3 flex justify-between gap-2">
-      <div className="relative flex-1">
+    <div className="mb-3 grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-between">
+      <div className="relative col-span-full flex-1">
         <span className="absolute inset-y-0 left-2 flex items-center justify-center">
           <LucideSearch className="size-4" />
         </span>
@@ -126,15 +129,13 @@ export function ProviderToolbar({
           </span>
         )}
       </div>
-      {(filter.query !== "" ||
-        filter.category.length !== 0 ||
-        filter.freeProviders) && (
+      {isFiltering && (
         <Button
           aria-label="Reset filters"
           variant="outline"
           onClick={handleResetFilters}
           size="sm"
-          className="ml-auto h-8 bg-background"
+          className="ml-auto h-8 w-full bg-background sm:w-max"
         >
           <LucideFilterX className="size-4" />
           Reset filters
@@ -146,13 +147,16 @@ export function ProviderToolbar({
             aria-label="Toggle filters"
             variant="outline"
             size="sm"
-            className="ml-auto h-8 bg-background"
+            className={cn(
+              !isFiltering && "col-span-2",
+              "ml-auto h-8 w-full bg-background sm:w-max",
+            )}
           >
             <LucideFilter className="size-4" />
             Filter
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[250px] p-0" align="end">
+        <PopoverContent className="ml-2 w-[250px] p-0" align="end">
           <Command>
             <CommandInput placeholder="Filter providers by:" />
             <CommandList>

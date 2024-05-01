@@ -1,7 +1,7 @@
 "use client";
 
 import { LucideSearchX } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { type Provider } from "@/types/provider";
 import { ProviderCard } from "./provider-card";
@@ -40,7 +40,14 @@ export function ProviderList({ providers }: { providers: Provider[] }) {
       );
     });
   }, [filter]);
-
+  useEffect(() => {
+    // reset the filter to the desired values when the search params change
+    setFilter({
+      query: queryParams || "",
+      category: categoryParams || [],
+      freeProviders: Boolean(freeProviderParams ?? false),
+    });
+  }, [searchParams]);
   return (
     <>
       {providers.length !== 0 ? (
@@ -63,10 +70,12 @@ export function ProviderList({ providers }: { providers: Provider[] }) {
               ))}
             </div>
           ) : (
-            <div className="h-[60vh] flex flex-col items-center justify-center">
+            <div className="flex h-[60vh] flex-col items-center justify-center">
               <LucideSearchX className="size-16" />
               <p className="text-2xl font-bold">No results</p>
-              <span className="text-muted-foreground">Try with another search parameter or filter.</span>
+              <span className="text-muted-foreground">
+                Try with another search parameter or filter.
+              </span>
             </div>
           )}
         </>

@@ -1,12 +1,10 @@
 import {
-  ArrowRight,
+  ArrowUpRight,
   ChevronRight,
-  LucideGithub,
   LucideLayoutPanelLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { GithubIcon } from "@/components/icons/github";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -29,7 +27,8 @@ export default function Home() {
         Search and compare free and paid providers
       </h2>
       <p className="mt-6 text-center text-lg leading-6 text-gray-600 dark:text-gray-200">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo quia officiis velit explicabo, error repellendus aut sed placeat.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo quia
+        officiis velit explicabo, error repellendus aut sed placeat.
       </p>
       <div className="mt-10 flex flex-col gap-2">
         <div className="flex items-center gap-2">
@@ -53,7 +52,7 @@ export default function Home() {
               variant="secondary"
               className="group w-full"
               iconPlacement="right"
-              Icon={ChevronRight}
+              Icon={ArrowUpRight}
             >
               <GithubIcon className="size-4" />
               Go to GitHub
