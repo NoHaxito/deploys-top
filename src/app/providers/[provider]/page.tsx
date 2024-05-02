@@ -108,13 +108,6 @@ export default async function ProviderPage({
               </Link>
             );
           })}
-          {provider.is_serverless && (
-            <Link href="/providers?category=serverless">
-              <Badge variant="secondary" className="rounded-xl capitalize">
-                Serverless
-              </Badge>
-            </Link>
-          )}
         </div>
       </section>
       <section id="provider-services-offered" className="space-y-2">
