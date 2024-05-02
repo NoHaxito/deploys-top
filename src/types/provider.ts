@@ -24,5 +24,6 @@ export interface ServiceOffered {
       type: string;
     }[];
   };
+  disabled: boolean;
   supported_types: string[];
 }

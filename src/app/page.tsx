@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="relative mx-auto flex h-[calc(100vh-4.2rem)] max-w-2xl flex-col items-center justify-center">
+    <div className="relative mx-auto flex h-[calc(100vh-4.5rem)] max-w-2xl flex-col items-center justify-center duration-300 animate-in fade-in-0 slide-in-from-bottom-10">
       <div className="mb-8 flex">
         {/* <Link href="/compare" className="inline-flex">
           <Badge variant="secondary" className="h-8 rounded-lg">

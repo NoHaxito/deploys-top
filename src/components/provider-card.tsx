@@ -3,17 +3,21 @@
 import { LucideStars } from "lucide-react";
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { type Provider } from "@/types/provider";
-import { Button } from "./ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export function ProviderCard({ provider }: { provider: Provider }) {
-  const linkRef = useRef<HTMLAnchorElement>(null);
+  const linkRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!linkRef.current || isFocused) return;
 
     const link = linkRef.current;
@@ -41,15 +45,17 @@ export function ProviderCard({ provider }: { provider: Provider }) {
   };
 
   return (
-    <div className="relative h-full">
+    <div
+      onMouseMove={handleMouseMove}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      ref={linkRef}
+      className="relative h-full"
+    >
       <Link
         href={`/providers/${provider.id}`}
-        ref={linkRef}
-        onMouseMove={handleMouseMove}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         className="relative flex h-full gap-4 overflow-hidden rounded-lg border bg-neutral-100 p-4 shadow-lg dark:bg-neutral-900"
       >
         <div
@@ -69,7 +75,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
         <img
           draggable={false}
           src={provider.icon}
-          className="size-8 min-h-8 min-w-8"
+          className="size-8 min-h-8 min-w-8 [view-transition-name:logo]"
           alt={`${provider.name} provider logo`}
         />
         <div>

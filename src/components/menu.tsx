@@ -239,7 +239,7 @@ const ListItem = React.forwardRef<
               {providerIcon && (
                 <img
                   src={providerIcon}
-                  className="size-8 min-h-8 min-w-8 mix-blend-lighten"
+                  className="size-8 min-h-8 min-w-8"
                 />
               )}
               {categoryIcon && (

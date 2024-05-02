@@ -21,9 +21,9 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
     <>
       <div
         ref={ref}
-        className="relative flex h-[14rem] w-full flex-col items-center justify-center"
+        className="relative flex h-[14rem] w-full flex-col items-center justify-center duration-300 animate-in fade-in-0 slide-in-from-bottom-2"
       >
-        <img src={provider.icon} className="size-16 mix-blend-normal	" />
+        <img src={provider.icon} className="size-16 mix-blend-normal" />
         <h1 className="mt-2 text-lg font-bold tracking-tight md:text-3xl">
           {provider.name}
         </h1>
@@ -87,8 +87,8 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
               <LucideChevronLeft className="size-4 rotate-90" />
               <span className="sr-only">Scroll to top</span>
             </Button>
-            <img src={provider.icon} className="size-8" loading="lazy" />
-            <p className="text-md font-bold line-clamp-1">{provider.name}</p>
+            <img src={provider.icon} className="size-12" />
+            <p className="text-md line-clamp-1 font-bold">{provider.name}</p>
           </div>
           <div className="flex items-center justify-between gap-2">
             <Button
