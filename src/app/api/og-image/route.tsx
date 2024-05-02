@@ -5,6 +5,7 @@ import { client } from "@/sanity/lib/client";
 import { Provider } from "@/types/provider";
 
 export const runtime = "edge";
+export const revalidate = 5;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
