@@ -20,6 +20,13 @@ export const providerSchema = defineType({
       ],
     }),
     defineField({
+      name: "id",
+      type: "string",
+      description:
+        "Name of the provider in lowercase and slugified. Example: provider-name",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "name",
       type: "string",
       validation: (rule) => rule.required(),
@@ -33,16 +40,19 @@ export const providerSchema = defineType({
       name: "icon",
       type: "string",
       validation: (rule) => rule.required(),
+      description: "The url of the provider logo (ask to nohaxito)",
     }),
     defineField({
       name: "href",
       type: "url",
       validation: (rule) => rule.required(),
+      description: "The link to the provider page",
     }),
     defineField({
       name: "pricing_href",
       type: "url",
       validation: (rule) => rule.required(),
+      description: "The link to the provider pricing page",
     }),
     defineField({
       name: "services_offered",
@@ -115,11 +125,19 @@ export const providerSchema = defineType({
       name: "has_free_tier",
       type: "boolean",
       initialValue: false,
+      description: "If the provider has a free tier.",
+    }),
+    defineField({
+      name: "good_free_tier",
+      type: "boolean",
+      initialValue: false,
+      description: "If the provider has a good free tier.",
     }),
     defineField({
       name: "is_serverless",
       type: "boolean",
       initialValue: false,
+      description: "If the provider is serverless.",
     }),
   ],
 });

@@ -1,16 +1,16 @@
 "use client";
 
 import {
+  LucideArrowUpRight,
   LucideChevronLeft,
-  LucideChevronRight,
   LucideDollarSign,
   LucideGlobe,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Provider } from "@/lib/data";
 import { useIntersectionObserver } from "@/lib/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
+import { type Provider } from "@/types/provider";
 
 export function ProviderHeader({ provider }: { provider: Provider }) {
   const { isIntersecting, ref } = useIntersectionObserver({
@@ -21,9 +21,9 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
     <>
       <div
         ref={ref}
-        className="relative flex h-[14rem] w-full flex-col items-center justify-center"
+        className="relative flex h-[14rem] w-full flex-col items-center justify-center duration-300 animate-in fade-in-0 slide-in-from-bottom-2"
       >
-        <img src={provider.icon} className="size-14" />
+        <img src={provider.icon} className="size-16 mix-blend-normal" />
         <h1 className="mt-2 text-lg font-bold tracking-tight md:text-3xl">
           {provider.name}
         </h1>
@@ -45,7 +45,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
             <Button
               className="group h-8"
               asChild
-              Icon={LucideChevronRight}
+              Icon={LucideArrowUpRight}
               iconPlacement="right"
             >
               <Link href={provider.href} target="_blank">
@@ -57,7 +57,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
               variant="outline"
               className="group h-8"
               asChild
-              Icon={LucideChevronRight}
+              Icon={LucideArrowUpRight}
               iconPlacement="right"
             >
               <Link href={provider.pricing_href} target="_blank">
@@ -87,8 +87,8 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
               <LucideChevronLeft className="size-4 rotate-90" />
               <span className="sr-only">Scroll to top</span>
             </Button>
-            <img src={provider.icon} className="size-8" loading="lazy" />
-            <p className="text-md font-bold">{provider.name}</p>
+            <img src={provider.icon} className="size-12" />
+            <p className="text-md line-clamp-1 font-bold">{provider.name}</p>
           </div>
           <div className="flex items-center justify-between gap-2">
             <Button

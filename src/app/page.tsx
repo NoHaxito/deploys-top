@@ -1,17 +1,15 @@
 import {
-  ArrowRight,
+  ArrowUpRight,
   ChevronRight,
-  LucideGithub,
   LucideLayoutPanelLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { GithubIcon } from "@/components/icons/github";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="relative mx-auto flex h-[calc(100vh-4.2rem)] max-w-2xl flex-col items-center justify-center">
+    <div className="relative mx-auto flex h-[calc(100vh-4.5rem)] max-w-2xl flex-col items-center justify-center duration-300 animate-in fade-in-0 slide-in-from-bottom-10">
       <div className="mb-8 flex">
         {/* <Link href="/compare" className="inline-flex">
           <Badge variant="secondary" className="h-8 rounded-lg">
@@ -26,10 +24,11 @@ export default function Home() {
         </Link> */}
       </div>
       <h2 className="text-center text-3xl font-medium text-gray-900 dark:text-gray-50 sm:text-6xl">
-        Search and compare free and paid providers
+        Search & compare free and paid providers
       </h2>
       <p className="mt-6 text-center text-lg leading-6 text-gray-600 dark:text-gray-200">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo quia officiis velit explicabo, error repellendus aut sed placeat.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo quia
+        officiis velit explicabo, error repellendus aut sed placeat.
       </p>
       <div className="mt-10 flex flex-col gap-2">
         <div className="flex items-center gap-2">
@@ -53,7 +52,7 @@ export default function Home() {
               variant="secondary"
               className="group w-full"
               iconPlacement="right"
-              Icon={ChevronRight}
+              Icon={ArrowUpRight}
             >
               <GithubIcon className="size-4" />
               Go to GitHub
