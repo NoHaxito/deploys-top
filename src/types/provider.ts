@@ -1,10 +1,11 @@
 import { Category } from "./category";
 
 export interface Provider {
+  id: string;
   description: string;
   good_free_tier: boolean;
   has_free_tier: boolean;
-  href: boolean;
+  href: string;
   icon: string;
   is_serverless: boolean;
   name: string;
@@ -15,6 +16,7 @@ export interface Provider {
 export interface ServiceOffered {
   category_name: Category["id"];
   name: string;
+  description?: string;
   pricing: {
     free_tier: {
       included: string;

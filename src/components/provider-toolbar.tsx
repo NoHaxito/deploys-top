@@ -58,9 +58,9 @@ export function ProviderToolbar({
     const queryValue = e.currentTarget.value;
     setFilter({ ...filter, query: queryValue });
     if (e.currentTarget.value === "") {
-      params.delete("filter.query");
+      params.delete("query");
     } else {
-      params.set("filter.query", queryValue);
+      params.set("query", queryValue);
     }
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
@@ -70,10 +70,10 @@ export function ProviderToolbar({
     const params = new URLSearchParams(window.location.search);
     if (!isSelected) {
       setFilter({ ...filter, freeProviders: true });
-      params.set("filter.freeProviders", "true");
+      params.set("freeProviders", "true");
     } else {
       setFilter({ ...filter, freeProviders: false });
-      params.delete("filter.freeProviders");
+      params.delete("freeProviders");
     }
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
@@ -87,13 +87,13 @@ export function ProviderToolbar({
     const categoryValue = category;
     if (options?.type === "add") {
       setFilter({ ...filter, category: [...filter.category, category] });
-      params.append("filter.category", categoryValue);
+      params.append("category", categoryValue);
     } else if (options?.type === "remove") {
       setFilter({
         ...filter,
         category: filter.category.filter((c) => c !== category),
       });
-      params.delete("filter.category", categoryValue);
+      params.delete("category", categoryValue);
     }
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
@@ -102,9 +102,9 @@ export function ProviderToolbar({
   const handleResetFilters = () => {
     setFilter({ query: "", category: [], freeProviders: false });
     const params = new URLSearchParams(window.location.search);
-    params.delete("filter.query");
-    params.delete("filter.category");
-    params.delete("filter.freeProviders");
+    params.delete("query");
+    params.delete("category");
+    params.delete("freeProviders");
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
     });

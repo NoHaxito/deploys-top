@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Provider } from "@/lib/data";
 import { useIntersectionObserver } from "@/lib/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
+import { type Provider } from "@/types/provider";
 
 export function ProviderHeader({ provider }: { provider: Provider }) {
   const { isIntersecting, ref } = useIntersectionObserver({
@@ -23,7 +23,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
         ref={ref}
         className="relative flex h-[14rem] w-full flex-col items-center justify-center"
       >
-        <img src={provider.icon} className="size-14" />
+        <img src={provider.icon} className="size-16 mix-blend-normal	" />
         <h1 className="mt-2 text-lg font-bold tracking-tight md:text-3xl">
           {provider.name}
         </h1>
@@ -88,7 +88,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
               <span className="sr-only">Scroll to top</span>
             </Button>
             <img src={provider.icon} className="size-8" loading="lazy" />
-            <p className="text-md font-bold">{provider.name}</p>
+            <p className="text-md font-bold line-clamp-1">{provider.name}</p>
           </div>
           <div className="flex items-center justify-between gap-2">
             <Button

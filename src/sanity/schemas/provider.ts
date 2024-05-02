@@ -20,6 +20,13 @@ export const providerSchema = defineType({
       ],
     }),
     defineField({
+      name: "id",
+      type: "string",
+      description:
+        "Name of the provider in lowercase and slugified. Example: provider-name",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "name",
       type: "string",
       validation: (rule) => rule.required(),

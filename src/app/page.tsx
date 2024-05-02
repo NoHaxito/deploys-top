@@ -24,7 +24,7 @@ export default function Home() {
         </Link> */}
       </div>
       <h2 className="text-center text-3xl font-medium text-gray-900 dark:text-gray-50 sm:text-6xl">
-        Search and compare free and paid providers
+        Search & compare free and paid providers
       </h2>
       <p className="mt-6 text-center text-lg leading-6 text-gray-600 dark:text-gray-200">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo quia

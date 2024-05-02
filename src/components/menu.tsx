@@ -4,7 +4,6 @@ import {
   LucideLayoutGrid,
 } from "lucide-react";
 import React, { useEffect } from "react";
-import { SanityDocument } from "next-sanity";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -14,13 +13,12 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { type Provider } from "@/lib/data";
 import { queries } from "@/lib/groq-queries";
 import { LucideIcon } from "@/lib/lucide-icon";
 import { cn } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
+import { type Provider } from "@/types/provider";
 import { Button, buttonVariants } from "./ui/button";
 import {
   DropdownMenu,
@@ -54,7 +52,6 @@ export function DesktopMenu() {
   }, []);
 
   const pathname = usePathname();
-  const first_4_categories = categories.slice(0, 4);
   const first_6_free_providers = providers.slice(0, 6);
   return (
     <NavigationMenu className="hidden md:flex">
@@ -64,18 +61,12 @@ export function DesktopMenu() {
             Free Providers
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid h-64 w-[400px] grid-cols-1 gap-1 overflow-y-auto p-4 xl:h-max xl:w-[500px] xl:grid-cols-2">
+            <ul className="grid h-64 w-[400px] grid-cols-1 gap-1 overflow-y-auto p-4 lg:h-max lg:w-[500px] lg:grid-cols-2">
               {first_6_free_providers.map((provider) => (
                 <ListItem
-                  key={provider.name
-                    .toLowerCase()
-                    .replace(" ", "-")
-                    .replace(".", "-")}
+                  key={provider.id}
                   providerIcon={provider.icon}
-                  href={`/providers/${provider.name
-                    .toLowerCase()
-                    .replace(" ", "-")
-                    .replace(".", "-")}`}
+                  href={`/providers/${provider.id}`}
                   title={provider.name}
                 >
                   {provider.description}
@@ -87,7 +78,7 @@ export function DesktopMenu() {
                     buttonVariants({ variant: "link" }),
                     " text-center",
                   )}
-                  href="/providers?filter.freeProviders=true"
+                  href="/providers?freeProviders=true"
                 >
                   See all free providers ({providers.length})
                 </Link>
@@ -100,24 +91,15 @@ export function DesktopMenu() {
             Categories
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] grid-cols-2 gap-1 p-4">
-              {first_4_categories.map(({ id, name, icon }) => (
+            <ul className="grid h-64 w-[400px] grid-cols-2 gap-1 overflow-auto p-4 lg:h-max">
+              {categories.map(({ id, name, icon }) => (
                 <ListItem
                   key={id}
                   categoryIcon={icon}
-                  href={`/providers?filter.category=${id}`}
+                  href={`/providers?category=${id}`}
                   title={name}
                 />
               ))}
-              <Link
-                className={cn(
-                  buttonVariants({ variant: "link" }),
-                  "col-span-full text-center",
-                )}
-                href="/providers?categories"
-              >
-                See all categories ({categories.length})
-              </Link>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -182,27 +164,15 @@ export function MobileMenu() {
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent className="mr-1 max-w-44 sm:min-w-40">
             {first_6_free_providers.map((provider) => (
-              <DropdownMenuItem
-                asChild
-                key={provider.name
-                  .toLowerCase()
-                  .replace(" ", "-")
-                  .replace(".", "-")}
-                icon={provider.icon}
-              >
-                <Link
-                  href={`/providers/${provider.name
-                    .toLowerCase()
-                    .replaceAll(" ", "-")
-                    .replaceAll(".", "-")}`}
-                >
+              <DropdownMenuItem asChild key={provider.id} icon={provider.icon}>
+                <Link href={`/providers/${provider.id}`}>
                   <span className="line-clamp-1">{provider.name}</span>
                 </Link>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="text-xs">
-              <Link href="/providers?filter.freeProviders=true">
+              <Link href="/providers?freeProviders=true">
                 See all free providers ({providers.length})
               </Link>
             </DropdownMenuItem>
@@ -223,15 +193,9 @@ export function MobileMenu() {
                   <LucideIcon name={icon} className="size-5 min-h-5 min-w-5" />
                 }
               >
-                <Link href={`/providers?filter.category=${id}`}>{name}</Link>
+                <Link href={`/providers?category=${id}`}>{name}</Link>
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem asChild className="text-xs">
-              <Link href="/providers?categories">
-                See all categories ({categories.length})
-              </Link>
-            </DropdownMenuItem> */}
           </DropdownMenuSubContent>
         </DropdownMenuSub>
 

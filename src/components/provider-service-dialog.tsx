@@ -20,9 +20,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import type { Provider, ServiceOffered } from "@/lib/data";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import type { Provider, ServiceOffered } from "@/types/provider";
 import { Badge } from "./ui/badge";
 
 export function ProviderServiceDialog({
@@ -65,7 +65,7 @@ export function ProviderServiceDialog({
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger className="text-start">{children}</DrawerTrigger>
       <DrawerContent className="max-h-[96%]">
-        <div className="px-4 mt-4 flex gap-0.5 overflow-hidden whitespace-nowrap">
+        <div className="mt-4 flex gap-0.5 overflow-hidden whitespace-nowrap px-4">
           {service.supported_types?.map((type) => (
             <Badge variant="outline" key={type}>
               {type}

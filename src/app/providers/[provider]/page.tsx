@@ -19,19 +19,24 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { providers } from "@/lib/data";
+import { queries } from "@/lib/groq-queries";
+import { client } from "@/sanity/lib/client";
+import { Provider } from "@/types/provider";
 
 // import { SupportedTypesPopover } from "./_test";
 
-export function generateMetadata({
+export const revalidate = 5;
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
   params,
 }: {
   params: { provider: string };
-}): Metadata {
-  const provider = providers.find(
-    (provider) =>
-      provider.name.toLowerCase().replace(" ", "-").replace(".", "-") ===
-      params.provider.toLowerCase(),
-  );
+}): Promise<Metadata> {
+  const provider = await client.fetch<Provider>(queries.getProvider, {
+    id: params.provider,
+  });
 
   return {
     title: provider?.name,
@@ -63,22 +68,16 @@ export function generateMetadata({
   };
 }
 
-export default function ProviderPage({
+export default async function ProviderPage({
   params,
 }: {
   params: { provider: string };
 }) {
-  const provider = providers.find(
-    (provider) =>
-      provider.name.toLowerCase().replace(" ", "-").replace(".", "-") ===
-      params.provider.toLowerCase(),
-  );
+  const provider = await client.fetch<Provider>(queries.getProvider, {
+    id: params.provider,
+  });
+
   if (!provider) return notFound();
-  const providerCategories = [
-    ...new Set(
-      provider.services_offered.map(({ category_name }) => category_name!),
-    ),
-  ];
 
   return (
     <div className="space-y-6">
@@ -95,27 +94,26 @@ export default function ProviderPage({
       <ProviderHeader provider={provider} />
       <section id="provider-categories" className="space-y-2">
         <h3 className="text-lg font-bold">Categories</h3>
-        <div className="space-x-0.5">
-          {providerCategories.map((category_name) => {
-            if (!category_name) return;
+        <div className="space-x-0.5 space-y-0.5">
+          {provider.categories.map((category) => {
+            if (!category) return;
             return (
               <Link
-                href={`/providers?category=${category_name.toLowerCase().replaceAll(" ", "-").replace(".", "-")}`}
-                key={category_name.toLowerCase().replaceAll(" ", "-")}
+                href={`/providers?category=${category.id}`}
+                key={category.id}
               >
-                <Badge
-                  variant="secondary"
-                  className="h-8 rounded-lg capitalize"
-                >
-                  {category_name?.replaceAll("_", " ")}
+                <Badge variant="secondary" className="rounded-xl capitalize">
+                  {category.id}
                 </Badge>
               </Link>
             );
           })}
           {provider.is_serverless && (
-            <Badge variant="secondary" className="capitalize">
-              Serverless
-            </Badge>
+            <Link href="/providers?category=serverless">
+              <Badge variant="secondary" className="rounded-xl capitalize">
+                Serverless
+              </Badge>
+            </Link>
           )}
         </div>
       </section>
@@ -139,7 +137,7 @@ export default function ProviderPage({
               provider={provider}
               key={service.name.toLowerCase()}
             >
-              <Card className="relative">
+              <Card className="relative h-full">
                 <div className="absolute -top-2.5 right-2 rounded-lg border bg-background px-2 py-0.5 text-xs">
                   Free Tier
                 </div>

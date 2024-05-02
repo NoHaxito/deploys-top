@@ -12,5 +12,9 @@ import { NextStudio } from "next-sanity/studio";
 import config from "@/../sanity.config";
 
 export default function StudioPage() {
-  return <NextStudio config={config} />;
+  return (
+    <div className="h-[calc(100vh-4.2rem)]">
+      <NextStudio config={config} />
+    </div>
+  );
 }

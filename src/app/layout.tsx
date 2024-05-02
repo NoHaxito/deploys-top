@@ -3,6 +3,7 @@ import React from "react";
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import { Header } from "@/components/header";
+import { ProgressBar } from "@/components/progress-bar-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -82,6 +83,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ProgressBar />
           <div className="flex-1">
             <Header />
             <div className="fixed top-0 z-[-2] h-screen w-screen bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>

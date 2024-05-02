@@ -9,9 +9,9 @@ import { ProviderToolbar } from "./provider-toolbar";
 
 export function ProviderList({ providers }: { providers: Provider[] }) {
   const searchParams = useSearchParams();
-  const queryParams = searchParams.get("filter.query");
-  const freeProviderParams = searchParams.get("filter.freeProviders");
-  const categoryParams = searchParams.getAll("filter.category");
+  const queryParams = searchParams.get("query");
+  const freeProviderParams = searchParams.get("freeProviders");
+  const categoryParams = searchParams.getAll("category");
   const [filter, setFilter] = useState<{
     query: string;
     category: string[];
@@ -60,13 +60,7 @@ export function ProviderList({ providers }: { providers: Provider[] }) {
           {filteredProviders.length !== 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filteredProviders.map((provider) => (
-                <ProviderCard
-                  key={provider.name
-                    .toLowerCase()
-                    .replaceAll(" ", "-")
-                    .replaceAll(".", "-")}
-                  provider={provider}
-                />
+                <ProviderCard key={provider.id} provider={provider} />
               ))}
             </div>
           ) : (

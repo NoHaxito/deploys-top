@@ -43,7 +43,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
   return (
     <div className="relative h-full">
       <Link
-        href={`/providers/${provider.name.toLowerCase().replaceAll(" ", "-").replaceAll(".", "-")}`}
+        href={`/providers/${provider.id}`}
         ref={linkRef}
         onMouseMove={handleMouseMove}
         onFocus={handleFocus}

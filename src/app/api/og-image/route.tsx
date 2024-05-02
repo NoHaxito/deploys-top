@@ -1,16 +1,20 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import { providers } from "@/lib/data";
+import { queries } from "@/lib/groq-queries";
+import { client } from "@/sanity/lib/client";
+import { Provider } from "@/types/provider";
 
 export const runtime = "edge";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const provider = searchParams.get("provider");
-  const providerLogo = providers.find(
-    (p) =>
-      p.name.toLowerCase().replaceAll(" ", "-").replace(".", "-") === provider,
-  )?.icon;
+  const providerLogo = (
+    await client.fetch<Provider>(queries.getProvider, {
+      id: provider,
+    })
+  ).icon;
+
   if (!provider) {
     return new ImageResponse(
       (
@@ -36,7 +40,7 @@ export async function GET(req: NextRequest) {
               />
               <h1 tw="text-7xl text-white font-extrabold">Deploys.top</h1>
             </div>
-            <span tw="text-neutral-200 text-4xl text-center ">
+            <span tw="text-neutral-200 text-6xl text-center ">
               Compare your favorite providers
             </span>
           </div>
