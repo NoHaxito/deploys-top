@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
     await client.fetch<Provider>(queries.getProvider, {
       id: provider,
     })
-  ).icon;
+  )?.icon;
 
-  if (!provider) {
+  if (!provider || !providerLogo) {
     return new ImageResponse(
       (
         <div
@@ -32,23 +32,27 @@ export async function GET(req: NextRequest) {
           }}
           // tw="bg-neutral-950 "
         >
-          <div tw="flex items-center flex-col" style={{ gap: "1rem" }}>
-            <div tw="flex items-center" style={{ gap: "1rem" }}>
+          <div tw="flex items-center flex-col" style={{ gap: "3rem" }}>
+            <div tw="flex items-center" style={{ gap: "2rem" }}>
               <img
+                style={{
+                  objectFit: "contain",
+                }}
                 src="https://deploy.nohaxito.xyz/deploys-top.png"
-                tw="h-42 w-42"
+                height={125}
+                width={125}
               />
               <h1 tw="text-7xl text-white font-extrabold">Deploys.top</h1>
             </div>
-            <span tw="text-neutral-200 text-6xl text-center ">
+            <span tw="text-neutral-300 text-5xl text-center ">
               Compare your favorite providers
             </span>
           </div>
         </div>
       ),
       {
-        width: 1280,
-        height: 720,
+        width: 1200,
+        height: 630,
       },
     );
   }
@@ -68,25 +72,35 @@ export async function GET(req: NextRequest) {
             "radial-gradient(ellipse 80% 80% at 50% -20%,rgba(120,119,198,0.3),rgba(255,255,255,0))",
         }}
       >
-        <div tw="flex items-center flex-col" style={{ gap: "1rem" }}>
-          <div tw="flex items-center" style={{ gap: "1rem" }}>
-            <img src={providerLogo} tw="w-[150px] h-[150px]" />
-            <span tw="text-3xl font-bold text-white">›</span>
+        <div tw="flex items-center flex-col" style={{ gap: "3rem" }}>
+          <div tw="flex items-center" style={{ gap: "3rem" }}>
             <img
+              src={providerLogo}
+              height={125}
+              width={125}
+              style={{
+                objectFit: "contain",
+              }}
+            />
+            <span tw="text-7xl font-bold text-white">›</span>
+            <img
+              style={{
+                objectFit: "contain",
+              }}
               src="https://deploy.nohaxito.xyz/deploys-top.png"
-              width={150}
-              height={150}
+              width={125}
+              height={125}
             />
           </div>
-          <span tw="text-neutral-200 text-4xl text-center ">
+          <span tw="text-neutral-300 text-4xl text-center ">
             Compare your favorite providers
           </span>
         </div>
       </div>
     ),
     {
-      width: 1280,
-      height: 720,
+      width: 1200,
+      height: 630,
     },
   );
 }
