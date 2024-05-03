@@ -111,7 +111,7 @@ export function ProviderToolbar({
   };
 
   return (
-    <div className="mb-3 grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-between">
+    <div className="mb-3 gap-1 sm:gap-2 flex sm:items-center sm:justify-between">
       <div className="relative col-span-full flex-1">
         <span className="absolute inset-y-0 left-2 flex items-center justify-center">
           <LucideSearch className="size-4" />
@@ -135,10 +135,10 @@ export function ProviderToolbar({
           variant="outline"
           onClick={handleResetFilters}
           size="sm"
-          className="ml-auto h-8 w-full bg-background sm:w-max"
+          className="ml-auto h-8 bg-background sm:w-max"
         >
           <LucideFilterX className="size-4" />
-          Reset filters
+          <span className="hidden sm:inline">Reset filters</span>
         </Button>
       )}
       <Popover>
@@ -149,11 +149,11 @@ export function ProviderToolbar({
             size="sm"
             className={cn(
               !isFiltering && "col-span-2",
-              "ml-auto h-8 w-full bg-background sm:w-max",
+              "ml-auto h-8 bg-background sm:w-max",
             )}
           >
             <LucideFilter className="size-4" />
-            Filter
+            <span className="hidden sm:inline">Filter</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="ml-2 w-[250px] p-0" align="end">

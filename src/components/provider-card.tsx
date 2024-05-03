@@ -56,7 +56,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
     >
       <Link
         href={`/providers/${provider.id}`}
-        className="relative flex h-full gap-4 overflow-hidden rounded-lg border bg-neutral-100 p-4 shadow-lg dark:bg-neutral-900"
+        className="relative flex flex-col sm:flex-row items-center sm:items-start h-full gap-4 overflow-hidden rounded-lg border bg-neutral-100 py-4 px-2 md:p-4 shadow-lg dark:bg-neutral-900"
       >
         <div
           className="pointer-events-none absolute -inset-px hidden opacity-0 transition duration-300 dark:block"
@@ -78,7 +78,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
           className="size-8 min-h-8 min-w-8 [view-transition-name:logo]"
           alt={`${provider.name} provider logo`}
         />
-        <div>
+        <div className="text-center sm:text-start">
           <p className="font-bold">{provider.name}</p>
           <span className="line-clamp-2 text-sm text-muted-foreground">
             {provider.description}
