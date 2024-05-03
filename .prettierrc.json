@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-groq",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindConfig": "./tailwind.config.ts",
+  "importOrder": [
+    "react",
+    "next",
+    "^next/(.*)$",
+    "^@/(.*)$",
+    "lucide-react",
+    "^lucide-react/(.*)$",
+    "^[./]"
+  ]
+}
