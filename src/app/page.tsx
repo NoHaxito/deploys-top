@@ -61,7 +61,15 @@ export default function Home() {
         </div>
 
         <Link
-          href="https://github.com/nohaxito/deploys-top"
+          href={{
+            protocol: "https",
+            host: "github.com",
+            pathname: "/nohaxito/deploys-top/issues/new",
+            query: {
+              title: "Provider Request: <Insert Provider>",
+              body: "<Link to the provider home page>"
+            }
+          }}
           target="_blank"
           rel="noopener noreferrer"
           className="col-span-full inline-flex items-center"
