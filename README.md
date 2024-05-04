@@ -1,9 +1,9 @@
 # Deploys Top
 
 ![Home](./media/home.png)
-<div align="center">
+<p align="center">
     <a href="https://deploys-top.vercel.app/">🌐 Link to website</a>
-</div>
+</p>
 
 Compare your favorite providers filtering with your favorite technologies, such as Cloudflare or Amazon Web Services!
 
