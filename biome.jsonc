@@ -3,12 +3,26 @@
 	"organizeImports": {
 		"enabled": true
 	},
+	"files": {
+		"ignore": ["node_modules", ".next"],
+		"include": ["src/**/*"]
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true,
 			"nursery": {
 				"useSortedClasses": "warn"
+			},
+			"a11y": {
+				"noSvgWithoutTitle": "off"
+			},
+			"correctness": {
+				"noUnusedImports": "warn",
+				"useExhaustiveDependencies": "off"
+			},
+			"complexity": {
+				"noForEach": "off"
 			}
 		}
 	}
