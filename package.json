@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "next:lint": "next lint",
-    "lint": "biome lint --apply .",
-    "format": "biome format --write .",
-    "check": "biome check --apply ."
+    "lint": "biome lint --apply src/*",
+    "format": "biome format --write src/*",
+    "check": "biome check --apply src/*",
+    "check:unsafe": "biome check --apply-unsafe src/*"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.0.18",
