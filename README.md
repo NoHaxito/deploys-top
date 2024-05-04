@@ -15,7 +15,7 @@ Compare your favorite providers filtering with your favorite technologies, such 
 
 ## Requesting provider
 
-Open an issue on our GitHub repository using the [provider request template](...).
+Open an issue on our GitHub repository using the [provider request template](https://github.com/NoHaxito/deploys-top/issues/new?assignees=&labels=provider+request&projects=&template=request-provider.md&title=%5B%E2%9E%95%5D+Provider+Request).
 
 ## Contribution
 
