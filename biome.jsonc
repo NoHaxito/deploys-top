@@ -4,8 +4,7 @@
 		"enabled": true
 	},
 	"files": {
-		"ignore": ["node_modules", ".next"],
-		"include": ["src/**/*"]
+		"ignore": ["node_modules", ".next"]
 	},
 	"linter": {
 		"enabled": true,

@@ -25,7 +25,7 @@ export function ProvidersCarousel({ providers }: { providers: Provider[] }) {
 			<CarouselContent>
 				{providers.slice(0, 7).map((provider) => (
 					<CarouselItem
-						className="flex items-center justify-center lg:basis-1/3 md:basis-1/2"
+						className="flex basis-1/3 items-center justify-center lg:basis-1/3"
 						key={provider.name}
 					>
 						<img

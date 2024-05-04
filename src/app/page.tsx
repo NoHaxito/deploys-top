@@ -33,7 +33,7 @@ export default async function Home() {
 			</h2>
 			<p className="mt-6 text-center text-gray-600 text-lg leading-6 dark:text-gray-200">
 				Find the best option for your needs quickly and easily!
-				<br /> We have <strong>+{providers.length} providers</strong> added to
+				<br /> We have <strong>+{providers.length} providers</strong> added on
 				the list.
 			</p>
 			<div className="mt-10 flex flex-col gap-2">
@@ -79,7 +79,12 @@ export default async function Home() {
 					rel="noopener noreferrer"
 					className="col-span-full inline-flex items-center"
 				>
-					<Button className="w-full text-muted-foreground" variant="link">
+					<Button
+						className="group w-full text-muted-foreground"
+						iconPlacement="right"
+						Icon={ArrowUpRight}
+						variant="link"
+					>
 						Request a provider
 					</Button>
 				</Link>
