@@ -2,7 +2,7 @@
  * Taked from https://github.com/nextui-org/nextui/blob/main/packages/utilities/react-rsc-utils/src/children.ts
  * All credits to the respective author
  */
-import { Children, isValidElement, ReactNode } from "react";
+import { Children, type ReactNode, isValidElement } from "react";
 
 /**
  * Gets only the valid children of a component,
@@ -11,29 +11,29 @@ import { Children, isValidElement, ReactNode } from "react";
  * @param children the children
  */
 export function getValidChildren(children: React.ReactNode) {
-  return Children.toArray(children).filter((child) =>
-    isValidElement(child),
-  ) as React.ReactElement[];
+	return Children.toArray(children).filter((child) =>
+		isValidElement(child),
+	) as React.ReactElement[];
 }
 
-export const pickChildren = <T = ReactNode,>(
-  children: T | undefined,
-  targetChild: React.ElementType,
+export const pickChildren = <T = ReactNode>(
+	children: T | undefined,
+	targetChild: React.ElementType,
 ): [T | undefined, T[] | undefined] => {
-  let target: T[] = [];
+	const target: T[] = [];
 
-  const withoutTargetChildren = Children.map(children, (item) => {
-    if (!isValidElement(item)) return item;
-    if (item.type === targetChild) {
-      target.push(item as T);
+	const withoutTargetChildren = Children.map(children, (item) => {
+		if (!isValidElement(item)) return item;
+		if (item.type === targetChild) {
+			target.push(item as T);
 
-      return null;
-    }
+			return null;
+		}
 
-    return item;
-  })?.filter(Boolean) as T;
+		return item;
+	})?.filter(Boolean) as T;
 
-  const targetChildren = target.length >= 0 ? target : undefined;
+	const targetChildren = target.length >= 0 ? target : undefined;
 
-  return [withoutTargetChildren, targetChildren];
+	return [withoutTargetChildren, targetChildren];
 };
