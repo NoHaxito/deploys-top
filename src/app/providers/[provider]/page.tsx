@@ -180,7 +180,7 @@ export default async function ProviderPage({
 													</Badge>
 												))}
 
-												{service.supported_types?.length > 1 && (
+												{service.supported_types?.length > 3 && (
 													<Badge
 														title={`${service.supported_types.join(", ")}`}
 														variant="outline"
