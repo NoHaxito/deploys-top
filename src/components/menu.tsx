@@ -141,7 +141,7 @@ export function MobileMenu() {
 			<DropdownMenuTrigger asChild>
 				<Button
 					variant="ghost"
-					className="data-[state=open]:bg-muted group flex h-8 w-8 overflow-hidden whitespace-nowrap md:hidden sm:w-max"
+					className="group flex h-8 w-8 overflow-hidden whitespace-nowrap md:hidden sm:w-max data-[state=open]:bg-muted"
 				>
 					<div className="group relative flex flex-col gap-1">
 						<div className="h-px w-4 rounded-lg bg-foreground transition-transform duration-300 ease-in-out group-data-[state=open]:translate-y-0.5 group-data-[state=open]:rotate-[45deg]" />

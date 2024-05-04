@@ -66,15 +66,7 @@ export default async function Home() {
 					</Link>
 				</div>
 				<Link
-					href={{
-						protocol: "https",
-						host: "github.com",
-						pathname: "/nohaxito/deploys-top/issues/new",
-						query: {
-							title: "Provider Request: <Insert Provider>",
-							body: "<Link to the provider home page>",
-						},
-					}}
+					href="https://github.com/NoHaxito/deploys-top/issues/new?assignees=&labels=provider+request&projects=&template=request-provider.md&title=%5B%E2%9E%95%5D+Provider+Request"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="col-span-full inline-flex items-center"

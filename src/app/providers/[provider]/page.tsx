@@ -110,7 +110,7 @@ export default async function ProviderPage({
 								key={category.id}
 							>
 								<Badge variant="secondary" className="rounded-xl capitalize">
-									{category.id}
+									{category.name}
 								</Badge>
 							</Link>
 						);
@@ -167,9 +167,11 @@ export default async function ProviderPage({
 														{type}
 													</Badge>
 												))}
-												<Badge variant="outline">
-													+{service.supported_types.length - 5} more
-												</Badge>
+												{service.supported_types.length > 5 && (
+													<Badge variant="outline">
+														+{service.supported_types.length - 5} more
+													</Badge>
+												)}
 											</div>
 											<div className="flex flex-wrap gap-0.5 xs:hidden">
 												{service.supported_types.slice(0, 3).map((type) => (
