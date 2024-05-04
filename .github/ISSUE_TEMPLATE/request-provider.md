@@ -3,7 +3,7 @@ name: Request Provider
 about: Request a provider to include.
 title: "[➕] Provider Request"
 labels: provider request
-assignees: NoHaxito
+assignees: ''
 
 ---
 
