@@ -1,5 +1,5 @@
-import { ProvidersCarousel } from "@/components/providers-carousel";
 import { GithubIcon } from "@/components/icons/github";
+import { ProvidersCarousel } from "@/components/providers-carousel";
 import { Button } from "@/components/ui/button";
 import { queries } from "@/lib/groq-queries";
 import { client } from "@/sanity/lib/client";

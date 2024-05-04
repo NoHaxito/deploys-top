@@ -1,10 +1,10 @@
 "use client";
-import type { Provider } from "@/types/provider";
 import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
 } from "@/components/ui/carousel";
+import type { Provider } from "@/types/provider";
 import Autoplay from "embla-carousel-autoplay";
 export function ProvidersCarousel({ providers }: { providers: Provider[] }) {
 	return (

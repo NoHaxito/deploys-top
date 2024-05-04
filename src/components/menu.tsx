@@ -1,7 +1,3 @@
-import { LucideDollarSign, LucideLayoutGrid } from "lucide-react";
-import React, { useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -15,6 +11,10 @@ import { LucideIcon } from "@/lib/lucide-icon";
 import { cn } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import type { Provider } from "@/types/provider";
+import { LucideDollarSign, LucideLayoutGrid } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useEffect } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import {
 	DropdownMenu,
