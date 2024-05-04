@@ -58,7 +58,7 @@ export function ProviderList({ providers }: { providers: Provider[] }) {
             providers={providers}
           />
           {filteredProviders.length !== 0 ? (
-            <div className="grid gap-3 duration-300 animate-in fade-in-0 slide-in-from-bottom-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 duration-300 animate-in fade-in-0 slide-in-from-bottom-10 grid-cols-2 auto-rows-fr lg:grid-cols-3">
               {filteredProviders.map((provider) => (
                 <ProviderCard key={provider.id} provider={provider} />
               ))}
