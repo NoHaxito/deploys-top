@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+export const revalidate = 5;
+
 export default async function Home() {
 	const providers = await client.fetch<Provider[]>(queries.allProviders);
 	return (

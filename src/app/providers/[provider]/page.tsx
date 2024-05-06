@@ -82,7 +82,6 @@ export default async function ProviderPage({
 	});
 
 	if (!provider) return notFound();
-
 	return (
 		<div className="space-y-6">
 			<Button
@@ -143,12 +142,16 @@ export default async function ProviderPage({
 							<Card
 								className={cn(
 									service.disabled && "cursor-not-allowed opacity-50",
-									"relative h-full",
+									"relative h-full transition-all duration-300 hover:border-primary",
 								)}
 							>
-								<div className="-top-2.5 absolute right-2 rounded-lg border bg-background px-2 py-0.5 text-xs">
-									Free Tier
-								</div>
+								{service.pricing.plans.find((pl) =>
+									pl.name.toLowerCase().includes("free"),
+								) && (
+									<div className="-top-2.5 absolute right-2 rounded-lg border bg-background px-2 py-0.5 text-xs">
+										Free Tier
+									</div>
+								)}
 								<CardHeader className="px-4 py-3">
 									<CardTitle className="text-md capitalize">
 										{service.name}

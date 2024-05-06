@@ -7,30 +7,24 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger,
-} from "@/components/ui/drawer";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
-import { cn } from "@/lib/utils";
 import type { Provider, ServiceOffered } from "@/types/provider";
 import * as React from "react";
 import { Badge } from "./ui/badge";
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+
+import {
+	Credenza,
+	CredenzaClose,
+	CredenzaContent,
+	CredenzaDescription,
+	CredenzaFooter,
+	CredenzaHeader,
+	CredenzaTitle,
+	CredenzaTrigger,
+} from "./ui/credenza";
+import Link from "next/link";
+import { LucideArrowUpRight } from "lucide-react";
+import { Checkbox } from "./ui/checkbox";
 
 export function ProviderServiceDialog({
 	children,
@@ -44,109 +38,109 @@ export function ProviderServiceDialog({
 	const [open, setOpen] = React.useState(false);
 	const isDesktop = useMediaQuery("(min-width: 640px)");
 
-	if (isDesktop) {
-		return (
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogTrigger
-					disabled={service.disabled}
-					className="h-full text-start"
-				>
-					{children}
-				</DialogTrigger>
-				<DialogContent className="max-h-[90%] overflow-y-auto sm:max-w-[600px]">
-					<ScrollArea className="w-full whitespace-nowrap">
-						<div className="flex gap-0.5 overflow-hidden overflow-x-auto whitespace-nowrap pb-3">
-							{service.supported_types?.map((type) => (
-								<Badge variant="outline" key={type}>
-									{type}
-								</Badge>
-							))}
-						</div>
-						<ScrollBar orientation="horizontal" />
-					</ScrollArea>
-					<DialogHeader>
-						<DialogTitle>{service.name}</DialogTitle>
-						<DialogDescription>
-							View information about the <b>{service.name}</b> service offered
-							by <b>{provider.name}</b>.
-						</DialogDescription>
-					</DialogHeader>
-					<div className="">
-						{open && (
-							<Accordion
-								type="multiple"
-								defaultValue={["pricing-free_tier"]}
-								className="w-full"
-							>
-								{Object.entries(service.pricing).map(([key, value]) => (
-									<AccordionItem
-										className={cn(
-											Object.entries(service.pricing).length === 1 &&
-												"border-transparent",
-										)}
-										key={`pricing-${key}`}
-										value={`pricing-${key}`}
-									>
-										<AccordionTrigger>
-											<p className="capitalize">{key.replaceAll("_", " ")}</p>
-										</AccordionTrigger>
-										<AccordionContent className="px-2">
-											<Accordion type="multiple">
-												{value.map((item) => (
-													<AccordionItem
-														value={`pricing-${key}-${item.type
-															.toLowerCase()
-															.replaceAll(" ", "-")}`}
-														key={`pricing-${key}-${item.type
-															.toLowerCase()
-															.replaceAll(" ", "-")}`}
-													>
-														<AccordionTrigger className="py-2">
-															<p className="font-semibold text-md capitalize">
-																{item.type}
-															</p>
-														</AccordionTrigger>
-														<AccordionContent className="space-y-1">
-															{Object.entries(item).map(
-																([key, value], entryIndex) => {
-																	if (
-																		key === "_key" ||
-																		key === null ||
-																		(key === "type" && value === item.type)
-																	)
-																		return;
-																	return (
-																		<div
-																			key={`${key.replaceAll(
-																				"_",
-																				" ",
-																			)}-${entryIndex}`}
-																			className="flex items-center justify-between gap-2"
-																		>
-																			<p className="capitalize">
-																				{key.replaceAll("_", " ")}
-																			</p>
-																			<p>{value}</p>
-																		</div>
-																	);
-																},
-															)}
-														</AccordionContent>
-													</AccordionItem>
-												))}
-											</Accordion>
-										</AccordionContent>
-									</AccordionItem>
-								))}
-							</Accordion>
-						)}
-					</div>
-				</DialogContent>
-			</Dialog>
-		);
-	}
-
 	return (
+		<Credenza open={open} onOpenChange={setOpen}>
+			<CredenzaTrigger className="text-start">{children}</CredenzaTrigger>
+			<CredenzaContent className="max-h-[96%] sm:overflow-hidden sm:overflow-y-auto">
+				<div className="mt-3 flex gap-0.5 overflow-y-auto whitespace-nowrap px-4 pb-3 sm:px-0">
+					{service.supported_types?.map((type) => (
+						<Badge variant="outline" key={type}>
+							{type}
+						</Badge>
+					))}
+				</div>
+				<CredenzaHeader className="text-left">
+					<CredenzaTitle>{service.name}</CredenzaTitle>
+					<CredenzaDescription>
+						View information about the <b>{service.name}</b> service offered by{" "}
+						<b>{provider.name}</b>.
+					</CredenzaDescription>
+				</CredenzaHeader>
+				<div className="overflow-hidden overflow-y-auto px-4 sm:overflow-hidden sm:overflow-y-hidden sm:px-0">
+					{open && (
+						<Accordion
+							type="multiple"
+							defaultValue={[
+								`pricing-${service.pricing.plans[0].name.toLowerCase()}`,
+							]}
+							className="w-full"
+						>
+							{service.pricing.plans.map((plan) => (
+								<AccordionItem
+									key={`pricing-${plan.name.toLowerCase()}`}
+									value={`pricing-${plan.name.toLowerCase()}`}
+								>
+									<AccordionTrigger>
+										<p className="capitalize">{plan.name}</p>
+									</AccordionTrigger>
+									<AccordionContent className="px-2">
+										<Accordion type="multiple">
+											{plan.plan_features.map((feature) => (
+												<AccordionItem
+													value={feature.name.toLowerCase().replace(" ", "_")}
+													key={feature.name.toLowerCase().replace(" ", "_")}
+												>
+													<AccordionTrigger className="py-2">
+														<p>{feature.name}</p>
+													</AccordionTrigger>
+													<AccordionContent className="px-1">
+														{feature.values.map(
+															({ key, value }, index: number) => (
+																<div
+																	key={`${key.replaceAll("_", " ")}-${index}`}
+																	className="flex items-center justify-between gap-2"
+																>
+																	<p className="capitalize">
+																		{key.replaceAll("_", " ")}
+																	</p>
+
+																	{/* Fix this later */}
+																	{value.toLowerCase() === "true" ? (
+																		<Checkbox checked={Boolean(value)} />
+																	) : (
+																		<p>{value}</p>
+																	)}
+																</div>
+															),
+														)}
+													</AccordionContent>
+												</AccordionItem>
+											))}
+										</Accordion>
+									</AccordionContent>
+								</AccordionItem>
+							))}
+						</Accordion>
+					)}
+				</div>
+				<CredenzaFooter>
+					<CredenzaClose asChild>
+						<Button size="sm" variant="outline">
+							Close
+						</Button>
+					</CredenzaClose>
+					{service.service_pricing_url && (
+						<Link
+							href={service.service_pricing_url}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<Button
+								size="sm"
+								className="group w-full"
+								iconPlacement="right"
+								Icon={LucideArrowUpRight}
+							>
+								See pricing
+							</Button>
+						</Link>
+					)}
+				</CredenzaFooter>
+			</CredenzaContent>
+		</Credenza>
+	);
+
+	/*	return (
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger disabled={service.disabled} className="text-start">
 				{children}
@@ -244,4 +238,5 @@ export function ProviderServiceDialog({
 			</DrawerContent>
 		</Drawer>
 	);
+	*/
 }
