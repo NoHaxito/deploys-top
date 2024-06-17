@@ -5,25 +5,21 @@ import { LucideSearchX } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ProviderCard } from "./provider-card";
-import { ProviderToolbar } from "./provider-toolbar";
+import { type Filter, ProviderToolbar } from "./provider-toolbar";
 
 export function ProviderList({ providers }: { providers: Provider[] }) {
   const searchParams = useSearchParams();
   const queryParams = searchParams.get("query");
   const freeProviderParams = searchParams.get("freeProviders");
   const categoryParams = searchParams.getAll("category");
-  const [filter, setFilter] = useState<{
-    query: string;
-    category: string[];
-    freeProviders: boolean;
-  } | null>(null);
+  const [filter, setFilter] = useState<Filter | null>(null);
 
   const filteredProviders = useMemo(() => {
-    if(!filter) return [];
+    if (!filter) return [];
     return providers.filter((provider) => {
       const categoryFilterPassed =
-        filter.category.length === 0 ||
-        filter.category.every((category) => {
+        filter.category?.length === 0 ||
+        filter.category?.every((category) => {
           return provider.categories.some((c) => c.id === category);
         });
       const freeProviderFilterPassed =
@@ -38,7 +34,6 @@ export function ProviderList({ providers }: { providers: Provider[] }) {
     });
   }, [filter]);
   useEffect(() => {
-    // reset the filter to the desired values when the search params change
     setFilter({
       query: queryParams || "",
       category: categoryParams || [],

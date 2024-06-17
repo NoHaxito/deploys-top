@@ -28,9 +28,9 @@ import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export interface Filter {
-  query: string;
-  category: string[];
-  freeProviders: boolean;
+  query?: string;
+  category?: string[];
+  freeProviders?: boolean;
 }
 
 export function ProviderToolbar({
@@ -45,14 +45,15 @@ export function ProviderToolbar({
   const router = useRouter();
   const pathname = usePathname();
   const categories = providers.flatMap((provider) =>
-    provider.categories.map((category) => category),
+    provider.categories.map((category) => category)
   ); // refactor to receive via props
   const isFiltering =
-    filter?.query !== "" ||
-    filter?.category.length > 0 ||
-    filter?.freeProviders;
+    filter !== null &&
+    (filter.query !== "" ||
+      (filter.category && filter.category?.length > 0) ||
+      filter.freeProviders);
   const uniqueCategories: Category[] = Array.from(
-    new Set(categories.map((category) => JSON.stringify(category))),
+    new Set(categories.map((category) => JSON.stringify(category)))
   ).map((category) => JSON.parse(category));
   const [isPending, startTransition] = useTransition();
 
@@ -87,17 +88,22 @@ export function ProviderToolbar({
   };
   const handleCategoryChange = (
     category: string,
-    options?: { type: "add" | "remove" },
+    options?: { type: "add" | "remove" }
   ) => {
     const params = new URLSearchParams(window.location.search);
     const categoryValue = category;
     if (options?.type === "add") {
-      setFilter({ ...filter, category: [...filter.category, category] });
+      setFilter({
+        ...filter,
+        category: [...(filter?.category || []), category],
+        query: filter?.query || "",
+      });
       params.append("category", categoryValue);
     } else if (options?.type === "remove") {
       setFilter({
         ...filter,
-        category: filter?.category.filter((c) => c !== category),
+        category: filter?.category?.filter((c) => c !== category) || [],
+        query: filter?.query || "",
       });
       params.delete("category", categoryValue);
     }
@@ -156,7 +162,7 @@ export function ProviderToolbar({
               size="sm"
               className={cn(
                 !isFiltering && "col-span-2",
-                "ml-auto h-8 bg-background sm:w-max",
+                "ml-auto h-8 bg-background sm:w-max"
               )}
             >
               <LucideFilter className="size-4" />
@@ -172,15 +178,15 @@ export function ProviderToolbar({
                   <CommandItem>
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-lg transition-all border border-primary",
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-primary transition-all",
                         false
                           ? "bg-primary text-primary-foreground [&_svg]:scale-100"
-                          : "opacity-50 [&_svg]:hidden [&_svg]:scale-95",
+                          : "opacity-50 [&_svg]:hidden [&_svg]:scale-95"
                       )}
                     >
                       <LucideCheck
                         className={cn(
-                          "fade-in-0 zoom-in-95 h-4 w-4 animate-in",
+                          "fade-in-0 zoom-in-95 h-4 w-4 animate-in"
                         )}
                       />
                     </div>
@@ -189,15 +195,15 @@ export function ProviderToolbar({
                   <CommandItem>
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-lg transition-all border border-primary",
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-primary transition-all",
                         false
                           ? "bg-primary text-primary-foreground [&_svg]:scale-100"
-                          : "opacity-50 [&_svg]:hidden [&_svg]:scale-95",
+                          : "opacity-50 [&_svg]:hidden [&_svg]:scale-95"
                       )}
                     >
                       <LucideCheck
                         className={cn(
-                          "fade-in-0 zoom-in-95 h-4 w-4 animate-in",
+                          "fade-in-0 zoom-in-95 h-4 w-4 animate-in"
                         )}
                       />
                     </div>
@@ -215,12 +221,12 @@ export function ProviderToolbar({
                         "mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-primary",
                         filter?.freeProviders
                           ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible",
+                          : "opacity-50 [&_svg]:invisible"
                       )}
                     >
                       <LucideCheck
                         className={cn(
-                          "fade-in-0 zoom-in-95 h-4 w-4 animate-in",
+                          "fade-in-0 zoom-in-95 h-4 w-4 animate-in"
                         )}
                       />
                     </div>
@@ -231,7 +237,7 @@ export function ProviderToolbar({
                     </span>
                   </CommandItem>
                   {uniqueCategories.map((category) => {
-                    const isSelected = filter?.category.includes(category.id);
+                    const isSelected = filter?.category?.includes(category.id);
                     return (
                       <CommandItem
                         key={category.id}
@@ -252,12 +258,12 @@ export function ProviderToolbar({
                             "mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-primary",
                             isSelected
                               ? "bg-primary text-primary-foreground"
-                              : "opacity-50 [&_svg]:hidden",
+                              : "opacity-50 [&_svg]:hidden"
                           )}
                         >
                           <LucideCheck
                             className={cn(
-                              "fade-in-0 zoom-in-50 h-4 w-4 animate-in",
+                              "fade-in-0 zoom-in-50 h-4 w-4 animate-in"
                             )}
                           />
                         </div>
@@ -275,7 +281,7 @@ export function ProviderToolbar({
                   })}
                 </CommandGroup>
                 {filter !== null && (
-                  <div className="bottom-0 sticky bg-background">
+                  <div className="sticky bottom-0 bg-background">
                     <CommandSeparator />
                     <CommandGroup>
                       <CommandItem
