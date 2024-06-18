@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useIntersectionObserver } from "@/lib/hooks/use-intersection-observer";
 import { cn } from "@/lib/utils";
 import type { Provider } from "@/types/provider";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   LucideArrowUpRight,
   LucideChevronLeft,
@@ -72,6 +73,7 @@ export function ProviderHeader({ provider }: { provider: Provider }) {
           </div>
         </div>
       </div>
+
       <div
         className={cn(
           !isIntersecting ? "translate-y-0 z-40" : "-z-50 translate-y-[200%]",
