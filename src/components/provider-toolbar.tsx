@@ -174,7 +174,7 @@ export function ProviderToolbar({
               <CommandInput placeholder="Filter providers by:" />
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup heading="Frameworks / Application Types">
+                {/* <CommandGroup heading="Frameworks / Application Types">
                   <CommandItem>
                     <div
                       className={cn(
@@ -209,7 +209,7 @@ export function ProviderToolbar({
                     </div>
                     Rust
                   </CommandItem>
-                </CommandGroup>
+                </CommandGroup> */}
                 <CommandGroup heading="Category">
                   <CommandItem
                     onSelect={() => {
@@ -280,7 +280,7 @@ export function ProviderToolbar({
                     );
                   })}
                 </CommandGroup>
-                {filter !== null && (
+                {isFiltering && (
                   <div className="sticky bottom-0 bg-background">
                     <CommandSeparator />
                     <CommandGroup>
