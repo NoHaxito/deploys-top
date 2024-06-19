@@ -164,7 +164,7 @@ export function SearchMenu() {
 							variant="secondary"
 						>
 							Close
-							<kbd className="px-4">Esc</kbd>
+							<kbd className="">Esc</kbd>
 						</Button>
 						<Button size="sm" className="h-7 text-xs" variant="secondary">
 							Navigate
