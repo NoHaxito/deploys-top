@@ -8,10 +8,14 @@ import { client } from "@/sanity/lib/client";
 import type { Provider } from "@/types/provider";
 import { buttonVariants } from "./ui/button";
 import { NavigationMenuContent } from "@radix-ui/react-navigation-menu";
+import { Badge } from "./ui/badge";
+import { Sparkles } from "lucide-react";
 
 export function DesktopMenu() {
 	const [providers, setProviders] = React.useState<Provider[]>([]);
-
+	const [randomProvider, setRandomProvider] = React.useState<Provider | null>(
+		providers[0],
+	);
 	useEffect(() => {
 		async function getFreeProviders() {
 			const ps = await client.fetch<Provider[]>(queries.freeProviders);
@@ -20,13 +24,49 @@ export function DesktopMenu() {
 		getFreeProviders().then((data) => setProviders(data));
 	}, []);
 
-	const first_6_free_providers = providers.slice(0, 6);
+	const first6FreeProviders = providers.slice(0, 6);
+	const weekRatedProvider = providers.find(
+		(provider) => provider.name === "Turso",
+	);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const randomProvider =
+				providers[Math.floor(Math.random() * providers.length)];
+			setRandomProvider(randomProvider);
+		}, 10000);
+		return () => clearInterval(interval);
+	}, [providers]);
+
 	return (
 		<NavigationMenuContent>
 			<div className="grid gap-3 p-4 md:grid-cols-[auto_minmax(auto,1fr)]">
-				<div className="h-48 rounded-lg bg-accent/50 backdrop-blur md:h-full md:w-56" />
+				<div className="group relative flex h-48 flex-col overflow-hidden rounded-lg bg-accent/50 transition-all md:h-full md:w-64 hover:bg-accent">
+					{randomProvider && (
+						<div className="group relative flex h-full w-full flex-col p-4">
+							<p className="font-medium text-lg">{randomProvider?.name}</p>
+							<span className="line-clamp-2 text-muted-foreground text-sm">
+								{randomProvider?.description}
+							</span>
+							<div
+								className="absolute right-4 bottom-14 h-full w-full max-w-32 opacity-50 transition-all duration-700 group-hover:opacity-80"
+								style={{
+									backgroundImage: `url(${randomProvider?.icon})`,
+									backgroundRepeat: "no-repeat",
+									backgroundPosition: "bottom right",
+									backgroundSize: "contain",
+								}}
+							/>
+							<Badge className="mt-auto w-max gap-2">
+								<Sparkles className="size-4" />
+								Most Rated
+							</Badge>
+						</div>
+					)}
+				</div>
+
 				<ul className="grid h-64 w-[300px] grid-cols-1 gap-1 overflow-y-auto md:h-max md:w-full md:grid-cols-2">
-					{first_6_free_providers.map((provider) => (
+					{first6FreeProviders.map((provider) => (
 						<ListItem
 							key={provider.id}
 							providerIcon={provider.icon}

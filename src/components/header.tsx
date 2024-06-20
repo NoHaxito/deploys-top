@@ -24,7 +24,6 @@ export function Header() {
 					<NavigationMenu.Item asChild value="free-providers">
 						<div className="container flex max-w-screen-lg items-center">
 							<div
-								onMouseLeave={() => setOpen(false)}
 								className={cn(
 									open ? "h-96" : "h-12",
 									"slide-in-from-top-10 flex w-full animate-in flex-col gap-y-2 overflow-hidden rounded-xl border bg-background/80 backdrop-blur-lg transition-[height] duration-500",

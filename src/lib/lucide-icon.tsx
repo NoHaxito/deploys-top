@@ -11,16 +11,6 @@ const fallback = (
 		<LucideLoader2 className="size-5 min-h-5 min-w-5 animate-spin" />
 	</div>
 );
-const _Icon = ({ name, ...props }: IconProps) => {
-	const Icon = dynamic(
-		dynamicIconImports[name as keyof typeof dynamicIconImports],
-		{
-			loading: () => fallback,
-		},
-	);
-
-	return <Icon {...props} />;
-};
 
 export const LucideIcon = ({ name, ...props }: IconProps) => {
 	const Icon = React.useMemo(
@@ -33,5 +23,3 @@ export const LucideIcon = ({ name, ...props }: IconProps) => {
 
 	return <Icon {...props} />;
 };
-
-export const _LucideIcon = React.memo(_Icon);
