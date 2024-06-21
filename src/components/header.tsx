@@ -10,15 +10,32 @@ import { SearchMenu } from "./search-menu";
 import { useState } from "react";
 
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import type { Session, User } from "lucia";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { LucideLogOut } from "lucide-react";
+import { logout } from "@/app/auth/actions";
+import { usePathname } from "next/navigation";
 
-export function Header() {
+export function Header({
+	session,
+	user,
+}: {
+	session: Session | null;
+	user: User | null;
+}) {
 	const [open, setOpen] = useState(false);
-
+	const pathname = usePathname();
 	return (
 		<header className="fixed top-4 z-50 w-full transition-colors">
 			<NavigationMenu.Root
 				asChild
-				onValueChange={(value) => setOpen(value === "free-providers")}
+				defaultValue="free-providers"
+				onValueChange={(value) => setOpen(value !== "")}
 			>
 				<NavigationMenu.List asChild>
 					<NavigationMenu.Item asChild value="free-providers">
@@ -60,14 +77,38 @@ export function Header() {
 									</NavigationMenu.Trigger>
 									<div className="flex flex-1 items-center justify-end space-x-1">
 										<SearchMenu />
-										<Button
-											disabled
-											variant="outline"
-											className="h-8"
-											size="sm"
-										>
-											Sign In
-										</Button>
+										{!session ? (
+											<Button
+												variant="outline"
+												className="h-8"
+												size="sm"
+												asChild
+											>
+												<Link href={`/auth/github?next=${pathname}`}>
+													Sign In
+												</Link>
+											</Button>
+										) : (
+											<DropdownMenu>
+												<DropdownMenuTrigger>
+													<img
+														src={user?.avatar_url}
+														alt="profile pic"
+														className="size-8 rounded-full"
+													/>
+												</DropdownMenuTrigger>
+												<DropdownMenuContent>
+													<DropdownMenuItem
+														onSelect={async () => {
+															await logout(pathname);
+														}}
+													>
+														<LucideLogOut className="size-4" />
+														Sign Out
+													</DropdownMenuItem>
+												</DropdownMenuContent>
+											</DropdownMenu>
+										)}
 
 										<ThemeToggle />
 										<Link
@@ -83,7 +124,6 @@ export function Header() {
 										</Link>
 									</div>
 								</div>
-
 								<DesktopMenu />
 							</div>
 						</div>

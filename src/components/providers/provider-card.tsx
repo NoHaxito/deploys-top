@@ -6,6 +6,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn, isAwsProvider } from "@/lib/utils";
 import type { Provider } from "@/types/provider";
 import { LucideStars } from "lucide-react";
 import Link from "next/link";
@@ -63,20 +64,23 @@ export function ProviderCard({ provider }: { provider: Provider }) {
 					className="-inset-px pointer-events-none absolute hidden opacity-0 transition duration-300 dark:block"
 					style={{
 						opacity,
-						background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgb(38 38 38 / 0.3), transparent 40%)`,
+						background: `radial-gradient(350px circle at ${position.x}px ${position.y}px, rgb(38 38 38 / 0.5), transparent 40%)`,
 					}}
 				/>
 				<div
 					className="-inset-px pointer-events-none absolute block opacity-0 transition duration-300 dark:hidden"
 					style={{
 						opacity,
-						background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgb(229 229 229 / 0.4), transparent 40%)`,
+						background: `radial-gradient(350px circle at ${position.x}px ${position.y}px, rgb(229 229 229 / 0.6), transparent 40%)`,
 					}}
 				/>
 				<img
 					draggable={false}
 					src={provider.icon}
-					className="size-8 min-h-8 min-w-8 [view-transition-name:logo]"
+					className={cn(
+						isAwsProvider(provider.name) && "dark:aws-logo",
+						"size-8 min-h-8 min-w-8",
+					)}
 					alt={`${provider.name} provider logo`}
 				/>
 				<div className="text-center sm:text-start">

@@ -3,55 +3,57 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { queries } from "@/lib/groq-queries";
-import { cn } from "@/lib/utils";
+import { cn, isAwsProvider } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import type { Provider } from "@/types/provider";
 import { buttonVariants } from "./ui/button";
 import { NavigationMenuContent } from "@radix-ui/react-navigation-menu";
 import { Badge } from "./ui/badge";
 import { Sparkles } from "lucide-react";
+import { getRandomMostVotedProvider } from "@/actions/get-random-most-voted-provider";
 
 export function DesktopMenu() {
 	const [providers, setProviders] = React.useState<Provider[]>([]);
-	const [randomProvider, setRandomProvider] = React.useState<Provider | null>(
-		providers[0],
-	);
+	const [mostVoted, setMostVoted] = React.useState<Provider | null>(null);
+
 	useEffect(() => {
 		async function getFreeProviders() {
 			const ps = await client.fetch<Provider[]>(queries.freeProviders);
 			return ps;
 		}
-		getFreeProviders().then((data) => setProviders(data));
+		getFreeProviders().then((data) => {
+			setProviders(data);
+		});
+	}, []);
+	useEffect(() => {
+		async function getRandomProvider() {
+			const provider = await getRandomMostVotedProvider();
+			return provider;
+		}
+		getRandomProvider().then((mostVoted) => {
+			setMostVoted(JSON.parse(mostVoted) as Provider);
+		});
 	}, []);
 
 	const first6FreeProviders = providers.slice(0, 6);
-	const weekRatedProvider = providers.find(
-		(provider) => provider.name === "Turso",
-	);
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const randomProvider =
-				providers[Math.floor(Math.random() * providers.length)];
-			setRandomProvider(randomProvider);
-		}, 10000);
-		return () => clearInterval(interval);
-	}, [providers]);
 
 	return (
 		<NavigationMenuContent>
 			<div className="grid gap-3 p-4 md:grid-cols-[auto_minmax(auto,1fr)]">
 				<div className="group relative flex h-48 flex-col overflow-hidden rounded-lg bg-accent/50 transition-all md:h-full md:w-64 hover:bg-accent">
-					{randomProvider && (
-						<div className="group relative flex h-full w-full flex-col p-4">
-							<p className="font-medium text-lg">{randomProvider?.name}</p>
+					{mostVoted && (
+						<Link
+							href={`/providers/${mostVoted?.id}`}
+							className="group relative flex h-full w-full flex-col p-4"
+						>
+							<p className="font-medium text-lg">{mostVoted?.name}</p>
 							<span className="line-clamp-2 text-muted-foreground text-sm">
-								{randomProvider?.description}
+								{mostVoted?.description}
 							</span>
 							<div
 								className="absolute right-4 bottom-14 h-full w-full max-w-32 opacity-50 transition-all duration-700 group-hover:opacity-80"
 								style={{
-									backgroundImage: `url(${randomProvider?.icon})`,
+									backgroundImage: `url(${mostVoted?.icon})`,
 									backgroundRepeat: "no-repeat",
 									backgroundPosition: "bottom right",
 									backgroundSize: "contain",
@@ -61,7 +63,7 @@ export function DesktopMenu() {
 								<Sparkles className="size-4" />
 								Most Rated
 							</Badge>
-						</div>
+						</Link>
 					)}
 				</div>
 
@@ -115,7 +117,10 @@ export const ListItem = React.forwardRef<
 						<img
 							alt={`${title} logo`}
 							src={providerIcon}
-							className="size-8 min-h-8 min-w-8"
+							className={cn(
+								isAwsProvider(title as string) && "dark:aws-logo",
+								"size-8 min-h-8 min-w-8",
+							)}
 						/>
 					)}
 

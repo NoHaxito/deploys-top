@@ -34,6 +34,7 @@ export default async function ProvidersPage() {
 						className="group"
 						iconPlacement="right"
 						Icon={ArrowUpRight}
+						size="sm"
 						asChild
 					>
 						<Link

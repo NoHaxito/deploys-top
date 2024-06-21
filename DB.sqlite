@@ -1,0 +1,24 @@
+CREATE TABLE
+    IF NOT EXISTS user (
+        id TEXT NOT NULL PRIMARY KEY,
+        username TEXT,
+        avatar_url TEXT,
+        github_id INTEGER
+    );
+
+CREATE TABLE
+    IF NOT EXISTS session (
+        id TEXT NOT NULL PRIMARY KEY,
+        expires_at INTEGER NOT NULL,
+        user_id TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES user (id)
+    );
+
+CREATE TABLE
+    IF NOT EXISTS vote (
+        vote_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        provider_id TEXT NOT NULL,
+        user_id TEXT NOT NULL,
+        vote_type TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES user (id)
+    );
