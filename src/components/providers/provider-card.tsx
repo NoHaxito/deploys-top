@@ -58,7 +58,7 @@ export function ProviderCard({ provider }: { provider: Provider }) {
 		>
 			<Link
 				href={`/providers/${provider.id}`}
-				className="relative flex h-full flex-col items-center justify-center gap-4 overflow-hidden rounded-lg border bg-neutral-100 px-2 py-4 shadow-lg sm:flex-row sm:items-start sm:justify-start dark:bg-neutral-900 md:p-4"
+				className="relative flex h-full flex-col items-center justify-center gap-4 overflow-hidden rounded-lg border bg-accent/50 px-2 py-4 shadow-lg sm:flex-row sm:items-start sm:justify-start md:p-4"
 			>
 				<div
 					className="-inset-px pointer-events-none absolute hidden opacity-0 transition duration-300 dark:block"

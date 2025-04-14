@@ -1,4 +1,3 @@
-import { Header } from "@/components/header";
 import { ProgressBar } from "@/components/progress-bar-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
@@ -10,8 +9,8 @@ import "./globals.css";
 import { getSession } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Navbar } from "@/components/new-header";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const interVariable = localFont({
 	variable: "--font-sans",
