@@ -213,7 +213,7 @@ export default async function ProviderPage({
 					))}
 				</div>
 			</section>
-			<section
+			{/* <section
 				id="provider-services-offered"
 				className="fade-in-0 slide-in-from-bottom-4 animate-in space-y-2 duration-300"
 			>
@@ -236,7 +236,7 @@ export default async function ProviderPage({
 						</div>
 					</div>
 				</div>
-			</section>
+			</section> */}
 		</div>
 	);
 }

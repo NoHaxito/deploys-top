@@ -2,60 +2,78 @@
 
 import type { Provider } from "@/types/provider";
 import { LucideSearchX } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { ProviderCard } from "./provider-card";
-import { type Filter, ProviderToolbar } from "./toolbar";
+import { ProviderToolbar } from "./toolbar";
+import { AnimatedGroup } from "../ui/animated-group";
+import {
+	parseAsArrayOf,
+	parseAsBoolean,
+	parseAsString,
+	useQueryStates,
+} from "nuqs";
 
 export function ProviderList({ providers }: { providers: Provider[] }) {
-	const searchParams = useSearchParams();
-	const queryParams = searchParams.get("query");
-	const freeProviderParams = searchParams.get("freeProviders");
-	const categoryParams = searchParams.getAll("category");
-	const [filter, setFilter] = useState<Filter | null>(null);
+	const [{ query, category, freeProviders }] = useQueryStates({
+		query: parseAsString.withDefault(""),
+		category: parseAsArrayOf(parseAsString).withDefault([]),
+		freeProviders: parseAsBoolean.withDefault(false),
+	});
 
 	const filteredProviders = useMemo(() => {
-		if (!filter) return [];
 		return providers.filter((provider) => {
 			const categoryFilterPassed =
-				filter.category?.length === 0 ||
-				filter.category?.every((category) => {
-					return provider.categories.some((c) => c.id === category);
+				category.length === 0 ||
+				category.every((categoryId) => {
+					return provider.categories.some((c) => c.id === categoryId);
 				});
-			const freeProviderFilterPassed =
-				!filter.freeProviders || provider.has_free_tier;
+			const freeProviderFilterPassed = !freeProviders || provider.has_free_tier;
 			const queryFilterPassed =
-				!filter.query ||
-				provider.name.toLowerCase().includes(filter.query.toLowerCase());
+				!query || provider.name.toLowerCase().includes(query.toLowerCase());
 
 			return (
 				categoryFilterPassed && queryFilterPassed && freeProviderFilterPassed
 			);
 		});
-	}, [filter]);
+	}, [providers, query, category, freeProviders]);
 
-	useEffect(() => {
-		setFilter({
-			query: queryParams || "",
-			category: categoryParams || [],
-			freeProviders: Boolean(freeProviderParams ?? false),
-		});
-	}, [searchParams]);
 	return (
 		<>
 			{providers.length !== 0 ? (
 				<>
-					<ProviderToolbar
-						filter={filter}
-						setFilter={setFilter}
-						providers={providers}
-					/>
+					<ProviderToolbar providers={providers} />
 					{filteredProviders.length !== 0 ? (
-						<div className="fade-in-0 slide-in-from-bottom-10 grid animate-in auto-rows-fr grid-cols-2 gap-3 duration-300 lg:grid-cols-3">
+						<AnimatedGroup
+							variants={{
+								container: {
+									hidden: { opacity: 0 },
+									visible: {
+										opacity: 1,
+										transition: {
+											staggerChildren: 0.05,
+										},
+									},
+								},
+								item: {
+									hidden: { opacity: 0, y: 40, filter: "blur(4px)" },
+									visible: {
+										opacity: 1,
+										y: 0,
+										filter: "blur(0px)",
+										transition: {
+											duration: 1.2,
+											type: "spring",
+											bounce: 0.3,
+										},
+									},
+								},
+							}}
+							className="grid auto-rows-fr grid-cols-2 gap-3 lg:grid-cols-3"
+						>
 							{filteredProviders.map((provider) => (
 								<ProviderCard key={provider.id} provider={provider} />
 							))}
-						</div>
+						</AnimatedGroup>
 					) : (
 						<div className="flex h-[60vh] flex-col items-center justify-center">
 							<LucideSearchX className="size-16" />

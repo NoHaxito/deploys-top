@@ -3,104 +3,82 @@
 import type { Category } from "@/types/category";
 import type { Provider } from "@/types/provider";
 import { LucideFilterX, LucideLoader2, LucideSearch } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Button } from "../ui/button";
-
 import { Input } from "../ui/input";
 import { FilterPopover } from "./filter-popover";
+import {
+	parseAsArrayOf,
+	parseAsBoolean,
+	parseAsString,
+	useQueryState,
+} from "nuqs";
 
 export interface Filter {
-	query?: string;
-	category?: string[];
-	freeProviders?: boolean;
+	query: string;
+	category: string[];
+	freeProviders: boolean;
 }
 
 export function ProviderToolbar({
 	providers,
-	filter,
-	setFilter,
 }: {
 	providers: Provider[];
-	filter: Filter | null;
-	setFilter: (filter: Filter | null) => void;
 }) {
-	const router = useRouter();
-	const pathname = usePathname();
+	const [isPending, startTransition] = useTransition();
+	const [query, setQuery] = useQueryState(
+		"query",
+		parseAsString.withDefault(""),
+	);
+	const [category, setCategory] = useQueryState(
+		"category",
+		parseAsArrayOf(parseAsString).withDefault([]),
+	);
+	const [freeProviders, setFreeProviders] = useQueryState(
+		"freeProviders",
+		parseAsBoolean.withDefault(false),
+	);
+
 	const categories = providers.flatMap((provider) =>
 		provider.categories.map((category) => category),
-	); // refactor to receive via props
-	const isFiltering =
-		filter !== null &&
-		(filter.query !== "" ||
-			(filter.category && filter.category?.length > 0) ||
-			filter.freeProviders);
+	);
+
+	const isFiltering = query !== "" || category.length > 0 || freeProviders;
+
 	const uniqueCategories: Category[] = Array.from(
 		new Set(categories.map((category) => JSON.stringify(category))),
 	).map((category) => JSON.parse(category));
-	const [isPending, startTransition] = useTransition();
 
 	const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const params = new URLSearchParams(window.location.search);
-		const queryValue = e.currentTarget.value;
-		setTimeout(() => {
-			setFilter({ ...filter, query: queryValue });
-		}, 1000);
-		if (e.currentTarget.value === "") {
-			params.delete("query");
-		} else {
-			params.set("query", queryValue);
-		}
 		startTransition(() => {
-			router.replace(`${pathname}?${params.toString()}`);
+			setQuery(e.target.value || null);
 		});
 	};
+
 	const handleFreeProvidersChange = (isSelected?: boolean) => {
-		const params = new URLSearchParams(window.location.search);
-		if (!isSelected) {
-			setFilter({ ...filter, freeProviders: true });
-			params.set("freeProviders", "true");
-		} else {
-			setFilter({ ...filter, freeProviders: false });
-			params.delete("freeProviders");
-		}
 		startTransition(() => {
-			router.replace(`${pathname}?${params.toString()}`);
+			setFreeProviders(!isSelected);
 		});
 	};
+
 	const handleCategoryChange = (
-		category: string,
+		categoryId: string,
 		options?: { type: "add" | "remove" },
 	) => {
-		const params = new URLSearchParams(window.location.search);
-		const categoryValue = category;
-		if (options?.type === "add") {
-			setFilter({
-				...filter,
-				category: [...(filter?.category || []), category],
-				query: filter?.query || "",
-			});
-			params.append("category", categoryValue);
-		} else if (options?.type === "remove") {
-			setFilter({
-				...filter,
-				category: filter?.category?.filter((c) => c !== category) || [],
-				query: filter?.query || "",
-			});
-			params.delete("category", categoryValue);
-		}
 		startTransition(() => {
-			router.replace(`${pathname}?${params.toString()}`);
+			if (options?.type === "add") {
+				setCategory([...category, categoryId]);
+			} else {
+				setCategory(category.filter((c) => c !== categoryId));
+			}
 		});
 	};
+
 	const handleResetFilters = () => {
-		setFilter({ query: "", category: [], freeProviders: false });
-		const params = new URLSearchParams(window.location.search);
-		params.delete("query");
-		params.delete("category");
-		params.delete("freeProviders");
 		startTransition(() => {
-			router.replace(`${pathname}?${params.toString()}`);
+			setQuery(null);
+			setCategory(null);
+			setFreeProviders(null);
 		});
 	};
 
@@ -111,7 +89,7 @@ export function ProviderToolbar({
 					<LucideSearch className="size-4" />
 				</span>
 				<Input
-					defaultValue={filter?.query}
+					value={query}
 					onChange={handleQueryChange}
 					placeholder="Search provider"
 					className="h-8 pr-8 pl-8 transition-[width]"
@@ -141,7 +119,9 @@ export function ProviderToolbar({
 					isFiltering={isFiltering}
 					categories={uniqueCategories}
 					providers={providers}
-					filter={filter}
+					query={query}
+					category={category}
+					freeProviders={freeProviders}
 					handleCategoryChange={handleCategoryChange}
 					handleResetFilters={handleResetFilters}
 					handleFreeProvidersChange={handleFreeProvidersChange}

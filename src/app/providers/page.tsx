@@ -17,7 +17,7 @@ export const metadata = {
 	title: "Providers",
 	description: "Search and compare free and paid providers.",
 };
-export const revalidate = 5;
+export const revalidate = 60;
 export const dynamic = "force-dynamic";
 
 export default async function ProvidersPage() {
@@ -31,7 +31,7 @@ export default async function ProvidersPage() {
 				</PageHeaderDescription>
 				<PageHeaderActions>
 					<Button
-						className="group"
+						className="group gap-0"
 						iconPlacement="right"
 						Icon={ArrowUpRight}
 						size="sm"
@@ -41,7 +41,7 @@ export default async function ProvidersPage() {
 							href={requestUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="col-span-full inline-flex items-center justify-center"
+							className="inline-flex items-center justify-center"
 						>
 							Request a provider
 						</Link>

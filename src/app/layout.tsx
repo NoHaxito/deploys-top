@@ -10,6 +10,8 @@ import "./globals.css";
 import { getSession } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 const interVariable = localFont({
 	variable: "--font-sans",
 	src: "../fonts/InterVariable.woff2",
@@ -18,8 +20,11 @@ const interVariable = localFont({
 	preload: true,
 });
 
+const BASE_URL =
+	process.env.NEXT_PUBLIC_BASE_URL || "https://deploy.nohaxito.xyz";
+
 export const metadata: Metadata = {
-	metadataBase: new URL("https://deploy.nohaxito.xyz"),
+	metadataBase: new URL(BASE_URL),
 	title: {
 		default: "Deploys.top",
 		template: "%s - Deploys.top",
@@ -31,13 +36,13 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		locale: "en_US",
-		url: "https://deploy.nohaxito.xyz",
+		url: BASE_URL,
 		title: "Deploys.top",
 		description: "Search and compare free and paid providers.",
 		siteName: "Deploys.top",
 		images: [
 			{
-				url: "https://deploy.nohaxito.xyz/api/og-image",
+				url: `${BASE_URL}/api/og-image`,
 				width: 1200,
 				height: 630,
 				alt: "Deploys.top",
@@ -48,7 +53,7 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		title: "Deploys.top",
 		description: "Search and compare free and paid providers.",
-		images: ["https://deploy.nohaxito.xyz/api/og-image"],
+		images: [`${BASE_URL}/api/og-image`],
 	},
 	robots: {
 		index: true,
@@ -86,12 +91,14 @@ export default async function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<ProgressBar />
-					<div className="flex-1">
-						<Header session={session} user={user} />
-						<div className="pt-20">{children}</div>
-						<Toaster />
-					</div>
+					<NuqsAdapter>
+						<ProgressBar />
+						<div className="flex-1">
+							<Header session={session} user={user} />
+							<div className="pt-20">{children}</div>
+							<Toaster />
+						</div>
+					</NuqsAdapter>
 				</ThemeProvider>
 			</body>
 		</html>

@@ -127,6 +127,7 @@ export function ProviderHeader({
 								});
 							}}
 							className="group h-8 rounded-none text-muted-foreground hover:text-primary"
+							aria-label={`Upvote ${provider.name}`}
 						>
 							<LucideThumbsUp
 								className={cn(
@@ -149,6 +150,7 @@ export function ProviderHeader({
 								});
 							}}
 							className="group h-8 rounded-none text-muted-foreground hover:text-primary"
+							aria-label={`Downvote ${provider.name}`}
 						>
 							<LucideThumbsDown
 								className={cn(

@@ -40,7 +40,7 @@ export function DesktopMenu() {
 	return (
 		<NavigationMenuContent>
 			<div className="grid gap-3 p-4 md:grid-cols-[auto_minmax(auto,1fr)]">
-				<div className="group relative flex h-48 flex-col overflow-hidden rounded-lg bg-accent/50 transition-all md:h-full md:w-64 hover:bg-accent">
+				<div className="group relative flex h-48 flex-col overflow-hidden rounded-lg bg-accent/50 transition-all duration-300 md:h-full md:w-64 hover:bg-accent">
 					{mostVoted && (
 						<Link
 							href={`/providers/${mostVoted?.id}`}
