@@ -25,36 +25,52 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const revalidate = 5;
+export const revalidate = 3600; // Revalidate every hour
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+	// Fetch all providers
+	const providers = await client.fetch<Provider[]>(queries.allProviders);
 
-export async function generateMetadata(
-    props: {
-        params: Promise<{ provider: string }>;
-    }
-): Promise<Metadata> {
-    const params = await props.params;
-    const provider = await client.fetch<Provider>(queries.getProvider, {
-		id: params.provider,
+	return providers.map((provider) => ({
+		provider: provider.id,
+	}));
+}
+
+export async function generateMetadata(props: {
+	params: Promise<{ provider: string }>;
+}): Promise<Metadata> {
+	const { provider } = await props.params;
+	const providerData = await client.fetch<Provider>(queries.getProvider, {
+		id: provider,
 	});
 
-    return {
-		title: provider?.name,
+	if (!providerData) {
+		return {
+			title: "Provider Not Found",
+			description: "The requested provider could not be found.",
+		};
+	}
+
+	const baseUrl =
+		process.env.NEXT_PUBLIC_APP_URL || "https://deploys-top.vercel.app/";
+	const ogImageUrl = `${baseUrl}/api/og-image?provider=${providerData.name
+		.toLowerCase()
+		.replaceAll(" ", "-")
+		.replaceAll(".", "-")}`;
+
+	return {
+		title: providerData.name,
 		description: "Search and compare free and paid providers.",
 		openGraph: {
 			type: "website",
 			locale: "en_US",
-			url: "https://deploy.nohaxito.xyz",
-			title: `${provider?.name} - Deploys.top`,
+			url: baseUrl,
+			title: `${providerData.name} - Deploys.top`,
 			description: "Search and compare free and paid providers.",
 			siteName: "Deploys.top",
 			images: [
 				{
-					url: `https://deploy.nohaxito.xyz/api/og-image?provider=${provider?.name
-						.toLowerCase()
-						.replaceAll(" ", "-")
-						.replaceAll(".", "-")}`,
+					url: ogImageUrl,
 					width: 1200,
 					height: 630,
 					alt: "Deploys.top",
@@ -63,41 +79,51 @@ export async function generateMetadata(
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: `${provider?.name} - Deploys.top`,
+			title: `${providerData.name} - Deploys.top`,
 			description: "Search and compare free and paid providers.",
-			images: [
-				`https://deploy.nohaxito.xyz/api/og-image?provider=${provider?.name
-					.toLowerCase()
-					.replaceAll(" ", "-")
-					.replaceAll(".", "-")}`,
-			],
+			images: [ogImageUrl],
 		},
 	};
 }
 
+// Move votes fetching to a separate server action or API route for dynamic data
 async function getAllVotes(provider_id: string) {
-	const votes = await db
-		.selectFrom("vote")
-		.selectAll()
-		.where("provider_id", "=", provider_id)
-		.execute();
-	return { votes };
+	try {
+		const votes = await db
+			.selectFrom("vote")
+			.selectAll()
+			.where("provider_id", "=", provider_id)
+			.execute();
+		return { votes };
+	} catch (error) {
+		console.error("Error fetching votes:", error);
+		return { votes: [] };
+	}
 }
 
-export default async function ProviderPage(
-    props: {
-        params: Promise<{ provider: string }>;
-    }
-) {
-    const params = await props.params;
-    const provider = await client.fetch<Provider>(queries.getProvider, {
-		id: params.provider,
+export default async function ProviderPage({
+	params,
+}: {
+	params: Promise<{ provider: string }>;
+}) {
+	const awaitedParams = await params;
+	// Fetch provider data
+	const provider = await client.fetch<Provider>(queries.getProvider, {
+		id: awaitedParams.provider,
 	});
 
-    if (!provider) return notFound();
-    const { user } = await getSession();
-    const { votes } = await getAllVotes(provider.id);
-    return (
+	if (!provider) return notFound();
+
+	// Get session and votes data
+	const [sessionData, votesData] = await Promise.all([
+		getSession(),
+		getAllVotes(provider.id),
+	]);
+
+	const { user } = sessionData;
+	const { votes } = votesData;
+
+	return (
 		<div className="space-y-6 pb-16">
 			<Button
 				className="mb-4 h-8 rounded-full md:hidden"
@@ -117,7 +143,7 @@ export default async function ProviderPage(
 				<h3 className="font-bold text-xl">Categories</h3>
 				<div className="space-x-0.5 space-y-0.5">
 					{provider.categories.map((category) => {
-						if (!category) return;
+						if (!category) return null;
 						return (
 							<Link
 								href={`/providers?category=${category.id}`}

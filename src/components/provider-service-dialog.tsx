@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
+import { cn } from "@/lib/utils";
 import type { Provider, ServiceOffered } from "@/types/provider";
+import { CheckIcon, LucideArrowUpRight, XIcon } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 import { Badge } from "./ui/badge";
-
-import { LucideArrowUpRight } from "lucide-react";
-import Link from "next/link";
-import { Checkbox } from "./ui/checkbox";
+import { Card, CardContent } from "./ui/card";
 import {
 	Credenza,
 	CredenzaClose,
@@ -40,86 +40,131 @@ export function ProviderServiceDialog({
 
 	return (
 		<Credenza open={open} onOpenChange={setOpen}>
-			<CredenzaTrigger className="text-start">{children}</CredenzaTrigger>
-			<CredenzaContent className="max-h-[96%] sm:overflow-hidden sm:overflow-y-auto">
-				{service.supported_types?.length && (
-					<div className="mt-3 flex gap-0.5 overflow-y-auto whitespace-nowrap px-4 pb-3 sm:px-0">
+			<CredenzaTrigger className="text-start w-full">
+				{children}
+			</CredenzaTrigger>
+			<CredenzaContent
+				className={cn(
+					"max-h-[95vh] max-w-[95vw] md:max-w-[85vw] lg:max-w-",
+					"flex flex-col overflow-hidden",
+					isDesktop ? "h-[85vh]" : "h-[95vh] mt-0",
+				)}
+			>
+				<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b">
+					<div className="flex gap-2 overflow-x-auto whitespace-nowrap px-4 py-3 sm:px-6 hide-scrollbar">
 						{service.supported_types?.map((type) => (
-							<Badge variant="outline" key={type}>
+							<Badge
+								variant="outline"
+								key={type}
+								className="px-3 py-1 text-xs font-medium bg-background/50 shrink-0"
+							>
 								{type}
 							</Badge>
 						))}
 					</div>
-				)}
-				<CredenzaHeader className="text-left">
-					<CredenzaTitle>{service.name}</CredenzaTitle>
-					<CredenzaDescription>
-						View information about the <b>{service.name}</b> service offered by{" "}
-						<b>{provider.name}</b>.
-					</CredenzaDescription>
-				</CredenzaHeader>
-				<div className="overflow-hidden overflow-y-auto px-4 sm:overflow-hidden sm:overflow-y-hidden sm:px-0">
-					{
+					<CredenzaHeader className="text-left px-4 sm:px-6 pb-4">
+						<CredenzaTitle className="text-xl sm:text-2xl font-bold tracking-tight">
+							{service.name}
+						</CredenzaTitle>
+						<CredenzaDescription className="text-muted-foreground mt-2 text-sm sm:text-base">
+							View information about the{" "}
+							<span className="font-medium text-foreground">
+								{service.name}
+							</span>{" "}
+							service offered by{" "}
+							<span className="font-medium text-foreground">
+								{provider.name}
+							</span>
+							.
+						</CredenzaDescription>
+					</CredenzaHeader>
+				</div>
+
+				<div className="flex-1 overflow-y-auto px-4 sm:px-6 space-y-6 py-4">
+					{open && (
 						<Accordion
 							type="multiple"
 							defaultValue={[
 								`pricing-${service.pricing.plans[0].name.toLowerCase()}`,
 							]}
-							className="w-full space-y-0.5"
+							className="w-full space-y-4"
 						>
 							{service.pricing.plans.map((plan) => (
 								<AccordionItem
-									className="border border-transparent px-3 transition-all data-[state=open]:rounded-lg data-[state=open]:border-border data-[state=open]:bg-accent/50"
 									key={`pricing-${plan.name.toLowerCase()}`}
 									value={`pricing-${plan.name.toLowerCase()}`}
+									className="border rounded-lg px-4 py-2 transition-all duration-200 data-[state=open]:bg-muted/50"
 								>
-									<AccordionTrigger>
-										<p className="capitalize">{plan.name}</p>
+									<AccordionTrigger className="hover:no-underline">
+										<div className="flex items-center gap-3">
+											<span className="text-base sm:text-lg font-semibold capitalize">
+												{plan.name}
+											</span>
+										</div>
 									</AccordionTrigger>
-									<AccordionContent className="px-2">
-										<Accordion type="multiple" className="space-y-0.5">
+									<AccordionContent className="pt-4 pb-2">
+										<div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
 											{plan.plan_features.map((feature) => (
-												<AccordionItem
-													className="border border-transparent px-3 transition-all data-[state=open]:rounded-lg data-[state=open]:border-border data-[state=open]:bg-accent/90"
-													value={feature.name.toLowerCase().replace(" ", "_")}
+												<Card
 													key={feature.name.toLowerCase().replace(" ", "_")}
+													className="overflow-hidden border-muted h-fit"
 												>
-													<AccordionTrigger className="py-2">
-														<p>{feature.name}</p>
-													</AccordionTrigger>
-													<AccordionContent className="px-1">
-														{feature.values.map(
-															({ key, value }, index: number) => (
-																<div
-																	key={`${key.replaceAll("_", " ")}-${index}`}
-																	className="flex items-center justify-between gap-2"
-																>
-																	<p className="capitalize">
-																		{key.replaceAll("_", " ")}
-																	</p>
+													<AccordionItem
+														value={feature.name.toLowerCase().replace(" ", "_")}
+														className="border-none"
+													>
+														<AccordionTrigger className="px-4 py-3 hover:no-underline bg-muted/50">
+															<p className="font-medium text-sm sm:text-base">
+																{feature.name}
+															</p>
+														</AccordionTrigger>
+														<AccordionContent>
+															<CardContent className="grid gap-2.5 p-4 pt-3">
+																{feature.values.map(
+																	({ key, value }, index: number) => (
+																		<div
+																			key={`${key.replaceAll(
+																				"_",
+																				" ",
+																			)}-${index}`}
+																			className="flex items-center justify-between gap-4 text-xs sm:text-sm"
+																		>
+																			<p className="capitalize text-muted-foreground">
+																				{key.replaceAll("_", " ")}
+																			</p>
 
-																	{/* Fix this later */}
-																	{value.toLowerCase() === "true" ? (
-																		<Checkbox checked={Boolean(value)} />
-																	) : (
-																		<p>{value}</p>
-																	)}
-																</div>
-															),
-														)}
-													</AccordionContent>
-												</AccordionItem>
+																			{value.toLowerCase() === "true" ? (
+																				<CheckIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" />
+																			) : value.toLowerCase() === "false" ? (
+																				<XIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground shrink-0" />
+																			) : (
+																				<p className="font-medium text-right">
+																					{value}
+																				</p>
+																			)}
+																		</div>
+																	),
+																)}
+															</CardContent>
+														</AccordionContent>
+													</AccordionItem>
+												</Card>
 											))}
-										</Accordion>
+										</div>
 									</AccordionContent>
 								</AccordionItem>
 							))}
 						</Accordion>
-					}
+					)}
 				</div>
-				<CredenzaFooter>
+
+				<CredenzaFooter className="flex-col-reverse sm:flex-row gap-3 px-4 sm:px-6 py-4 border-t bg-background/80 backdrop-blur-sm">
 					<CredenzaClose asChild>
-						<Button size="sm" variant="outline">
+						<Button
+							size={isDesktop ? "default" : "sm"}
+							variant="outline"
+							className="w-full sm:w-auto"
+						>
 							Close
 						</Button>
 					</CredenzaClose>
@@ -128,10 +173,12 @@ export function ProviderServiceDialog({
 							href={service.service_pricing_url}
 							target="_blank"
 							rel="noreferrer"
+							className="w-full sm:w-auto"
 						>
 							<Button
-								size="sm"
+								size={isDesktop ? "default" : "sm"}
 								className="group w-full"
+								variant="ringHover"
 								iconPlacement="right"
 								Icon={LucideArrowUpRight}
 							>
@@ -143,104 +190,4 @@ export function ProviderServiceDialog({
 			</CredenzaContent>
 		</Credenza>
 	);
-
-	/*	return (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<DrawerTrigger disabled={service.disabled} className="text-start">
-				{children}
-			</DrawerTrigger>
-			<DrawerContent className="max-h-[96%]">
-				<div className="mt-4 flex gap-0.5 overflow-y-auto whitespace-nowrap px-4 pb-3">
-					{service.supported_types?.map((type) => (
-						<Badge variant="outline" key={type}>
-							{type}
-						</Badge>
-					))}
-				</div>
-				<DrawerHeader className="text-left">
-					<DrawerTitle>{service.name}</DrawerTitle>
-					<DrawerDescription>
-						View information about the <b>{service.name}</b> service offered by{" "}
-						<b>{provider.name}</b>.
-					</DrawerDescription>
-				</DrawerHeader>
-				<div className="overflow-hidden overflow-y-auto px-4">
-					{open && (
-						<Accordion
-							type="multiple"
-							defaultValue={["pricing-free_tier"]}
-							className="w-full"
-						>
-							{Object.entries(service.pricing).map(([key, value]) => (
-								<AccordionItem
-									className={cn(
-										Object.entries(service.pricing).length === 1 &&
-											"border-transparent",
-									)}
-									key={`pricing-${key}`}
-									value={`pricing-${key}`}
-								>
-									<AccordionTrigger>
-										<p className="capitalize">{key.replaceAll("_", " ")}</p>
-									</AccordionTrigger>
-									<AccordionContent className="px-2">
-										<Accordion type="multiple">
-											{value.map((item) => (
-												<AccordionItem
-													value={`pricing-${key}-${item.type
-														.toLowerCase()
-														.replaceAll(" ", "-")}`}
-													key={`pricing-${key}-${item.type
-														.toLowerCase()
-														.replaceAll(" ", "-")}`}
-												>
-													<AccordionTrigger className="py-2">
-														<p className="font-semibold text-md capitalize">
-															{item.type}
-														</p>
-													</AccordionTrigger>
-													<AccordionContent className="space-y-1">
-														{Object.entries(item).map(
-															([key, value], entryIndex) => {
-																if (
-																	key === "_key" ||
-																	key === null ||
-																	(key === "type" && value === item.type)
-																)
-																	return;
-																return (
-																	<div
-																		key={`${key.replaceAll(
-																			"_",
-																			" ",
-																		)}-${entryIndex}`}
-																		className="flex items-center justify-between gap-2"
-																	>
-																		<p className="capitalize">
-																			{key.replaceAll("_", " ")}
-																		</p>
-																		<p>{value}</p>
-																	</div>
-																);
-															},
-														)}
-													</AccordionContent>
-												</AccordionItem>
-											))}
-										</Accordion>
-									</AccordionContent>
-								</AccordionItem>
-							))}
-						</Accordion>
-					)}
-				</div>
-				<DrawerFooter className="pt-2">
-					<DrawerClose asChild>
-						<Button variant="outline">Close</Button>
-					</DrawerClose>
-				</DrawerFooter>
-			</DrawerContent>
-		</Drawer>
-	);
-	*/
 }
