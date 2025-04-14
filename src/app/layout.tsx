@@ -11,6 +11,7 @@ import { getSession } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Navbar } from "@/components/new-header";
 
 const interVariable = localFont({
 	variable: "--font-sans",
@@ -94,7 +95,8 @@ export default async function RootLayout({
 					<NuqsAdapter>
 						<ProgressBar />
 						<div className="flex-1">
-							<Header session={session} user={user} />
+							{/* <Header session={session} user={user} /> */}
+							<Navbar />
 							<div className="pt-20">{children}</div>
 							<Toaster />
 						</div>

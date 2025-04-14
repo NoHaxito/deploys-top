@@ -19,6 +19,7 @@ export async function getRandomMostVotedProvider() {
 				.as("upvotes"),
 		])
 		.groupBy("provider_id")
+		// @ts-ignore
 		.having("upvotes", ">", 0)
 		.execute();
 

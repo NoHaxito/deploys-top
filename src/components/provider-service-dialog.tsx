@@ -12,6 +12,9 @@ import type { Provider, ServiceOffered } from "@/types/provider";
 import * as React from "react";
 import { Badge } from "./ui/badge";
 
+import { LucideArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { Checkbox } from "./ui/checkbox";
 import {
 	Credenza,
 	CredenzaClose,
@@ -22,9 +25,6 @@ import {
 	CredenzaTitle,
 	CredenzaTrigger,
 } from "./ui/credenza";
-import Link from "next/link";
-import { LucideArrowUpRight } from "lucide-react";
-import { Checkbox } from "./ui/checkbox";
 
 export function ProviderServiceDialog({
 	children,
@@ -42,13 +42,15 @@ export function ProviderServiceDialog({
 		<Credenza open={open} onOpenChange={setOpen}>
 			<CredenzaTrigger className="text-start">{children}</CredenzaTrigger>
 			<CredenzaContent className="max-h-[96%] sm:overflow-hidden sm:overflow-y-auto">
-				<div className="mt-3 flex gap-0.5 overflow-y-auto whitespace-nowrap px-4 pb-3 sm:px-0">
-					{service.supported_types?.map((type) => (
-						<Badge variant="outline" key={type}>
-							{type}
-						</Badge>
-					))}
-				</div>
+				{service.supported_types?.length && (
+					<div className="mt-3 flex gap-0.5 overflow-y-auto whitespace-nowrap px-4 pb-3 sm:px-0">
+						{service.supported_types?.map((type) => (
+							<Badge variant="outline" key={type}>
+								{type}
+							</Badge>
+						))}
+					</div>
+				)}
 				<CredenzaHeader className="text-left">
 					<CredenzaTitle>{service.name}</CredenzaTitle>
 					<CredenzaDescription>
@@ -57,16 +59,17 @@ export function ProviderServiceDialog({
 					</CredenzaDescription>
 				</CredenzaHeader>
 				<div className="overflow-hidden overflow-y-auto px-4 sm:overflow-hidden sm:overflow-y-hidden sm:px-0">
-					{open && (
+					{
 						<Accordion
 							type="multiple"
 							defaultValue={[
 								`pricing-${service.pricing.plans[0].name.toLowerCase()}`,
 							]}
-							className="w-full"
+							className="w-full space-y-0.5"
 						>
 							{service.pricing.plans.map((plan) => (
 								<AccordionItem
+									className="border border-transparent px-3 transition-all data-[state=open]:rounded-lg data-[state=open]:border-border data-[state=open]:bg-accent/50"
 									key={`pricing-${plan.name.toLowerCase()}`}
 									value={`pricing-${plan.name.toLowerCase()}`}
 								>
@@ -74,9 +77,10 @@ export function ProviderServiceDialog({
 										<p className="capitalize">{plan.name}</p>
 									</AccordionTrigger>
 									<AccordionContent className="px-2">
-										<Accordion type="multiple">
+										<Accordion type="multiple" className="space-y-0.5">
 											{plan.plan_features.map((feature) => (
 												<AccordionItem
+													className="border border-transparent px-3 transition-all data-[state=open]:rounded-lg data-[state=open]:border-border data-[state=open]:bg-accent/90"
 													value={feature.name.toLowerCase().replace(" ", "_")}
 													key={feature.name.toLowerCase().replace(" ", "_")}
 												>
@@ -111,7 +115,7 @@ export function ProviderServiceDialog({
 								</AccordionItem>
 							))}
 						</Accordion>
-					)}
+					}
 				</div>
 				<CredenzaFooter>
 					<CredenzaClose asChild>

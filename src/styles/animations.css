@@ -1,37 +1,37 @@
 @theme {
-    --animate-fd-fade-in: fd-fade-in 300ms ease;
+    --animate-fade-in: fade-in 300ms ease;
   
-    --animate-fd-fade-out: fd-fade-out 300ms ease;
+    --animate-fade-out: fade-out 300ms ease;
   
-    --animate-fd-dialog-in: fd-dialog-in 200ms cubic-bezier(0.32, 0.72, 0, 1);
+    --animate-dialog-in: dialog-in 200ms cubic-bezier(0.32, 0.72, 0, 1);
   
-    --animate-fd-dialog-out: fd-dialog-out 300ms cubic-bezier(0.32, 0.72, 0, 1);
+    --animate-dialog-out: dialog-out 300ms cubic-bezier(0.32, 0.72, 0, 1);
   
-    --animate-fd-popover-in: fd-popover-in 150ms ease;
+    --animate-popover-in: popover-in 150ms ease;
   
-    --animate-fd-popover-out: fd-popover-out 150ms ease;
+    --animate-popover-out: popover-out 150ms ease;
   
-    --animate-fd-collapsible-down: fd-collapsible-down 150ms ease-out;
+    --animate-collapsible-down: collapsible-down 150ms ease-out;
   
-    --animate-fd-collapsible-up: fd-collapsible-up 150ms ease-out;
+    --animate-collapsible-up: collapsible-up 150ms ease-out;
   
-    --animate-fd-accordion-down: fd-accordion-down 200ms ease-out;
+    --animate-accordion-down: accordion-down 200ms ease-out;
   
-    --animate-fd-accordion-up: fd-accordion-up 200ms ease-out;
+    --animate-accordion-up: accordion-up 200ms ease-out;
   
-    --animate-fd-nav-menu-in: fd-nav-menu-in 200ms ease;
+    --animate-nav-menu-in: nav-menu-in 200ms ease;
   
-    --animate-fd-nav-menu-out: fd-nav-menu-out 200ms ease;
+    --animate-nav-menu-out: nav-menu-out 200ms ease;
   
-    --animate-fd-enterFromLeft: fd-enterFromLeft 250ms ease;
+    --animate-enterFromLeft: enterFromLeft 250ms ease;
   
-    --animate-fd-enterFromRight: fd-enterFromRight 250ms ease;
+    --animate-enterFromRight: enterFromRight 250ms ease;
   
-    --animate-fd-exitToLeft: fd-exitToLeft 250ms ease;
+    --animate-exitToLeft: exitToLeft 250ms ease;
   
-    --animate-fd-exitToRight: fd-exitToRight 250ms ease;
+    --animate-exitToRight: exitToRight 250ms ease;
   
-    @keyframes fd-collapsible-down {
+    @keyframes collapsible-down {
       from {
         height: 0;
         opacity: 0;
@@ -41,7 +41,7 @@
       }
     }
   
-    @keyframes fd-collapsible-up {
+    @keyframes collapsible-up {
       from {
         height: var(--radix-collapsible-content-height);
       }
@@ -51,7 +51,7 @@
       }
     }
   
-    @keyframes fd-accordion-down {
+    @keyframes accordion-down {
       from {
         height: 0;
         opacity: 0.5;
@@ -61,7 +61,7 @@
       }
     }
   
-    @keyframes fd-accordion-up {
+    @keyframes accordion-up {
       from {
         height: var(--radix-accordion-content-height);
       }
@@ -71,7 +71,7 @@
       }
     }
   
-    @keyframes fd-dialog-in {
+    @keyframes dialog-in {
       from {
         transform: scale(0.95);
         opacity: 0;
@@ -81,7 +81,7 @@
       }
     }
   
-    @keyframes fd-dialog-out {
+    @keyframes dialog-out {
       from {
         transform: scale(1);
       }
@@ -91,7 +91,7 @@
       }
     }
   
-    @keyframes fd-popover-in {
+    @keyframes popover-in {
       from {
         opacity: 0;
         transform: scale(0.98) translateY(-4px);
@@ -102,7 +102,7 @@
       }
     }
   
-    @keyframes fd-popover-out {
+    @keyframes popover-out {
       from {
         opacity: 1;
         transform: translateY(0);
@@ -113,7 +113,7 @@
       }
     }
   
-    @keyframes fd-fade-in {
+    @keyframes fade-in {
       from {
         opacity: 0;
       }
@@ -122,7 +122,7 @@
       }
     }
   
-    @keyframes fd-fade-out {
+    @keyframes fade-out {
       from {
         opacity: 1;
       }
@@ -131,7 +131,7 @@
       }
     }
   
-    @keyframes fd-enterFromRight {
+    @keyframes enterFromRight {
       from {
         opacity: 0;
         transform: translateX(200px);
@@ -142,7 +142,7 @@
       }
     }
   
-    @keyframes fd-enterFromLeft {
+    @keyframes enterFromLeft {
       from {
         opacity: 0;
         transform: translateX(-200px);
@@ -153,7 +153,7 @@
       }
     }
   
-    @keyframes fd-exitToRight {
+    @keyframes exitToRight {
       from {
         opacity: 1;
         transform: translateX(0);
@@ -164,7 +164,7 @@
       }
     }
   
-    @keyframes fd-exitToLeft {
+    @keyframes exitToLeft {
       from {
         opacity: 1;
         transform: translateX(0);
@@ -175,7 +175,7 @@
       }
     }
   
-    @keyframes fd-nav-menu-in {
+    @keyframes nav-menu-in {
       from {
         opacity: 0;
         height: 0px;
@@ -186,7 +186,7 @@
       }
     }
   
-    @keyframes fd-nav-menu-out {
+    @keyframes nav-menu-out {
       from {
         opacity: 1;
         height: var(--radix-navigation-menu-viewport-height);
