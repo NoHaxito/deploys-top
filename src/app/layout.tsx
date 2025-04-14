@@ -20,8 +20,7 @@ const interVariable = localFont({
 	preload: true,
 });
 
-const BASE_URL =
-	process.env.NEXT_PUBLIC_BASE_URL || "https://deploy.nohaxito.xyz";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "deploys-top.vercel.app";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(BASE_URL),

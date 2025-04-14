@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 							style={{
 								objectFit: "contain",
 							}}
-							src="https://deploy.nohaxito.xyz/deploys-top.png"
+							src="https://deploys-top.vercel.app/deploys-top.png"
 							height={125}
 							width={125}
 						/>
@@ -75,22 +75,22 @@ export async function GET(req: NextRequest) {
 				<div tw="flex items-center" style={{ gap: "3rem" }}>
 					{/* biome-ignore lint/a11y/useAltText: <explanation> */}
 					<img
+						style={{
+							objectFit: "contain",
+						}}
+						src="https://deploys-top.vercel.app/deploys-top.png"
+						width={125}
+						height={125}
+					/>
+					<span tw="text-7xl font-bold text-white opacity-60">›</span>
+					{/* biome-ignore lint/a11y/useAltText: <explanation> */}
+					<img
 						src={providerLogo}
 						height={125}
 						width={125}
 						style={{
 							objectFit: "contain",
 						}}
-					/>
-					<span tw="text-7xl font-bold text-white">›</span>
-					{/* biome-ignore lint/a11y/useAltText: <explanation> */}
-					<img
-						style={{
-							objectFit: "contain",
-						}}
-						src="https://deploy.nohaxito.xyz/deploys-top.png"
-						width={125}
-						height={125}
 					/>
 				</div>
 				<span tw="text-neutral-300 text-4xl text-center ">
