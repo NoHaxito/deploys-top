@@ -105,7 +105,7 @@ export const ListItem = React.forwardRef<
 				ref={ref}
 				className={cn(
 					pathname === href && "bg-accent",
-					"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors duration-300 data-[active]:bg-accent focus:bg-accent hover:bg-accent focus:text-accent-foreground hover:text-accent-foreground",
+					"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors duration-300 data-active:bg-accent focus:bg-accent hover:bg-accent focus:text-accent-foreground hover:text-accent-foreground",
 					className,
 				)}
 				// biome-ignore lint/style/noNonNullAssertion: <explanation>

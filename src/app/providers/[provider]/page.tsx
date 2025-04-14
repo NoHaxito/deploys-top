@@ -29,16 +29,17 @@ export const revalidate = 5;
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({
-	params,
-}: {
-	params: { provider: string };
-}): Promise<Metadata> {
-	const provider = await client.fetch<Provider>(queries.getProvider, {
+export async function generateMetadata(
+    props: {
+        params: Promise<{ provider: string }>;
+    }
+): Promise<Metadata> {
+    const params = await props.params;
+    const provider = await client.fetch<Provider>(queries.getProvider, {
 		id: params.provider,
 	});
 
-	return {
+    return {
 		title: provider?.name,
 		description: "Search and compare free and paid providers.",
 		openGraph: {
@@ -83,19 +84,20 @@ async function getAllVotes(provider_id: string) {
 	return { votes };
 }
 
-export default async function ProviderPage({
-	params,
-}: {
-	params: { provider: string };
-}) {
-	const provider = await client.fetch<Provider>(queries.getProvider, {
+export default async function ProviderPage(
+    props: {
+        params: Promise<{ provider: string }>;
+    }
+) {
+    const params = await props.params;
+    const provider = await client.fetch<Provider>(queries.getProvider, {
 		id: params.provider,
 	});
 
-	if (!provider) return notFound();
-	const { user } = await getSession();
-	const { votes } = await getAllVotes(provider.id);
-	return (
+    if (!provider) return notFound();
+    const { user } = await getSession();
+    const { votes } = await getAllVotes(provider.id);
+    return (
 		<div className="space-y-6 pb-16">
 			<Button
 				className="mb-4 h-8 rounded-full md:hidden"

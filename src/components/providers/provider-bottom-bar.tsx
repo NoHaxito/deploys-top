@@ -12,7 +12,7 @@ export function ProviderBottomBar({
 		<div
 			className={cn(
 				!show ? "z-50 translate-y-0" : "-z-50 translate-y-[200%]",
-				"container fixed inset-x-0 bottom-4 w-full max-w-screen-sm transition-all duration-500",
+				"container fixed inset-x-0 bottom-4 w-full max-w-(--breakpoint-sm) transition-all duration-500",
 			)}
 		>
 			<div className="flex h-14 w-full items-center justify-between gap-2 rounded-lg border bg-background p-2 shadow-lg">

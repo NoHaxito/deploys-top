@@ -9,8 +9,8 @@ export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const storedNext = cookies().get("next")?.value ?? "/";
-  const storedState = cookies().get("github_oauth_state")?.value ?? null;
+  const storedNext = (await cookies()).get("next")?.value ?? "/";
+  const storedState = (await cookies()).get("github_oauth_state")?.value ?? null;
   if (!code || !state || !storedState || state !== storedState) {
     return new Response(null, {
       status: 400,
@@ -34,12 +34,12 @@ export async function GET(request: NextRequest): Promise<Response> {
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
-      cookies().set(
+      (await cookies()).set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes
       );
-      cookies().delete("next");
+      (await cookies()).delete("next");
       return new Response(null, {
         status: 302,
         headers: {
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes

@@ -3,5 +3,5 @@ export default function ProvidersLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="container max-w-screen-lg py-4">{children}</main>;
+  return <main className="container max-w-(--breakpoint-lg) py-4">{children}</main>;
 }

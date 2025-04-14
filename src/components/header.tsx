@@ -62,7 +62,7 @@ const NavButton = ({ open }: { open: boolean }) => (
 
 const UserProfile = ({ user, pathname }: { user: User; pathname: string }) => (
 	<DropdownMenu>
-		<DropdownMenuTrigger className="focus:outline-none focus:ring-2 focus:ring-primary">
+		<DropdownMenuTrigger className="focus:outline-hidden focus:ring-2 focus:ring-primary">
 			<div className="relative">
 				<img
 					src={user.avatar_url}
@@ -150,7 +150,7 @@ export function Header({ session, user }: HeaderProps) {
 				defaultValue="free-providers"
 				onValueChange={(value) => setOpen(value !== "")}
 			>
-				<NavigationMenu.List className="container flex max-w-screen-lg items-center">
+				<NavigationMenu.List className="container flex max-w-(--breakpoint-lg) items-center">
 					<NavigationMenu.Item value="free-providers" className="w-full">
 						<div className="flex w-full items-center">
 							<div
