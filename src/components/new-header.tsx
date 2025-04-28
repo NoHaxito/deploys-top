@@ -87,7 +87,7 @@ export function Navbar(props: HTMLAttributes<HTMLElement>) {
 				id="nd-nav"
 				{...props}
 				className={cn(
-					"-translate-x-1/2 fixed top-0 left-1/2 z-40 box-content w-full max-w-(--breakpoint-lg) border-foreground/10 border-b transition-colors lg:mt-2 lg:w-[calc(100%-1rem)] lg:rounded-2xl lg:border",
+					"-translate-x-1/2 fixed top-0 left-1/2 z-40 box-content w-full max-w-5xl border-foreground/10 border-b transition-colors lg:mt-2 lg:w-[calc(100%-1rem)] lg:rounded-2xl lg:border",
 					value.length > 0 ? "shadow-lg" : "shadow-sm",
 					"bg-background/80 backdrop-blur-lg",
 					props.className,

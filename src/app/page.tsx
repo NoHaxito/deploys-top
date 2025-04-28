@@ -1,24 +1,22 @@
-import { ProvidersCarousel } from "@/components/providers-carousel";
 import { GithubIcon } from "@/components/icons/github";
+import { ProvidersCarousel } from "@/components/providers-carousel";
 import { Button } from "@/components/ui/button";
 import { queries } from "@/lib/groq-queries";
 import { client } from "@/sanity/lib/client";
 import type { Provider } from "@/types/provider";
 import {
-	ArrowRight,
 	ArrowUpRight,
 	ChevronRight,
 	LucideLayoutPanelLeft,
 } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 5;
 
 export default async function Home() {
 	const providers = await client.fetch<Provider[]>(queries.allProviders);
 	return (
-		<div className="fade-in-0 slide-in-from-bottom-10 relative mx-auto flex h-[calc(100vh-6rem)] max-w-[90%] animate-in flex-col items-center justify-center duration-300 sm:max-w-2xl">
+		<div className="fade-in-0 slide-in-from-bottom-10 relative mx-auto flex h-[calc(100vh-6rem)] max-w-[90%] animate-in flex-col items-center justify-center duration-300 sm:max-w-2xl -mt-20 pt-20">
 			<div className="mb-8 flex">
 				{/* <Link href="/compare" className="inline-flex">
 					<Badge variant="outline" className="h-8 rounded-lg">

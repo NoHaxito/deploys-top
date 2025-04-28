@@ -95,7 +95,7 @@ export default async function RootLayout({
 						<div className="flex-1">
 							{/* <Header session={session} user={user} /> */}
 							<Navbar />
-							<div className="pt-20">{children}</div>
+							<div className="mx-auto mt-20 max-w-5xl">{children}</div>
 							<Toaster />
 						</div>
 					</NuqsAdapter>
